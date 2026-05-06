@@ -1,0 +1,87 @@
+<view class="teams-container">
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <text class="back-btn" bindtap="goBack">←</text>
+    <text class="title">约钓组队</text>
+    <text class="create-btn" bindtap="goToCreate">发布</text>
+  </view>
+
+  <!-- 状态筛选 -->
+  <view class="filter-tabs">
+    <view class="tab-item {{activeTab === 'recruiting' ? 'active' : ''}}" bindtap="switchTab" data-tab="recruiting">
+      <text>招募中</text>
+    </view>
+    <view class="tab-item {{activeTab === 'full' ? 'active' : ''}}" bindtap="switchTab" data-tab="full">
+      <text>已满员</text>
+    </view>
+    <view class="tab-item {{activeTab === 'my' ? 'active' : ''}}" bindtap="switchTab" data-tab="my">
+      <text>我的组队</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 团队列表 -->
+  <view class="teams-list" wx:if="{{!loading && teams.length > 0}}">
+    <view class="team-card" wx:for="{{teams}}" wx:key="id" bindtap="goToTeamDetail" data-id="{{item.id}}">
+      <!-- 团队头部 -->
+      <view class="team-header">
+        <text class="team-title">{{item.title}}</text>
+        <view class="team-status {{item.status}}">{{item.statusText}}</view>
+      </view>
+
+      <!-- 团队信息 -->
+      <view class="team-info">
+        <view class="info-row">
+          <text class="info-label">🎣 钓点：</text>
+          <text class="info-value">{{item.spot_name || item.location_name || '待定'}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.spot_address || item.location_name}}">
+          <text class="info-label">📍 位置：</text>
+          <text class="info-value location">{{item.spot_address || item.location_name}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">📅 时间：</text>
+          <text class="info-value">{{item.fishingDateText}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">👥 人数：</text>
+          <text class="info-value">{{item.current_members}}/{{item.max_members}}人</text>
+          <text class="fee-tag" wx:if="{{item.is_paid_team}}">💰 {{item.fee_amount}}元</text>
+          <text class="free-tag" wx:else>免费</text>
+        </view>
+        <view class="info-row" wx:if="{{item.spot_distance}}">
+          <text class="info-label">📏 距离：</text>
+          <text class="info-value distance">{{item.spot_distance}}</text>
+        </view>
+      </view>
+
+      <!-- 团队描述 -->
+      <view class="team-desc" wx:if="{{item.description}}">
+        {{item.description}}
+      </view>
+
+      <!-- 底部信息 -->
+      <view class="team-footer">
+        <view class="captain-info">
+          <image class="avatar" src="{{item.captain_avatar || '/images/avatar-default.png'}}" />
+          <text class="captain-name">{{item.captain_nickname || '钓友'}}</text>
+          <text class="captain-label">队长</text>
+        </view>
+        <view class="member-status" wx:if="{{item.is_member}}">
+          <text class="status-badge {{item.member_status}}">{{item.memberStatusText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && teams.length === 0}}">
+    <text class="empty-icon">🎣</text>
+    <text class="empty-text">暂无约钓活动</text>
+    <text class="empty-hint">快去发布一个约钓活动吧</text>
+  </view>
+</view>

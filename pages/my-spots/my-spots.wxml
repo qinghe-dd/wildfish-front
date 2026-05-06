@@ -1,0 +1,64 @@
+<!--pages/my-spots/my-spots.wxml-->
+<view class="my-spots-container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">我标记的钓点</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && spots.length === 0}}">
+    <text class="empty-icon">📍</text>
+    <text class="empty-text">还没有标记任何钓点</text>
+    <text class="empty-hint">去标记一个吧~</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 钓点列表 -->
+  <view class="spots-list" wx:if="{{!loading && spots.length > 0}}">
+    <view
+      class="spot-item"
+      wx:for="{{spots}}"
+      wx:key="id"
+      bindtap="goToSpotDetail"
+      data-id="{{item.id}}"
+    >
+      <!-- 钓点图片 -->
+      <view class="spot-image-wrapper">
+        <image class="spot-image" src="{{item.image_url || '/assets/default-spot.png'}}" mode="aspectFill"></image>
+        <view class="spot-type-badge">{{item.spot_type}}</view>
+      </view>
+
+      <!-- 钓点信息 -->
+      <view class="spot-info">
+        <view class="spot-header">
+          <text class="spot-name">{{item.name || '未命名钓点'}}</text>
+          <text class="spot-price" wx:if="{{item.is_paid_spot}}">¥{{item.price}}</text>
+          <text class="spot-free" wx:else>免费</text>
+        </view>
+
+        <view class="spot-details">
+          <view class="detail-row">
+            <text class="detail-label">水深：</text>
+            <text class="detail-value">{{item.water_depth || '未知'}}</text>
+          </view>
+          <view class="detail-row" wx:if="{{item.address}}">
+            <text class="detail-label">地址：</text>
+            <text class="detail-value">{{item.address}}</text>
+          </view>
+          <view class="detail-row">
+            <text class="detail-label">发布时间：</text>
+            <text class="detail-value">{{item.created_at}}</text>
+          </view>
+        </view>
+
+        <view class="spot-actions">
+          <text class="action-text">点击查看详情 →</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,13 @@
+var includes = function(array, item) {
+  if (!array) return false;
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] == item) {
+      return true;
+    }
+  }
+  return false;
+};
+
+module.exports = {
+  includes: includes
+};

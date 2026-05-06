@@ -1,0 +1,142 @@
+/* pages/my-posts/my-posts.wxss */
+.my-posts-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 40rpx;
+  background: #fff;
+  margin: 20rpx 30rpx;
+  border-radius: 20rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 40rpx;
+}
+
+.publish-btn {
+  padding: 20rpx 60rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+/* 动态列表 */
+.posts-list {
+  padding: 20rpx 0;
+}
+
+.post-item {
+  background: #fff;
+  margin: 0 30rpx 20rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+}
+
+.post-content {
+  margin-bottom: 20rpx;
+}
+
+.content-text {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.post-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.post-image.single {
+  width: 400rpx;
+  height: 400rpx;
+  border-radius: 10rpx;
+}
+
+.post-image.multiple {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 10rpx;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.post-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.post-stats {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-item {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.post-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 15rpx;
+  font-size: 26rpx;
+  border-radius: 10rpx;
+  border: none;
+}
+
+.delete-btn {
+  background: #fff;
+  color: #ff6b6b;
+  border: 1rpx solid #ff6b6b;
+}
+
+/* 浮动发布按钮 */
+.floating-publish-btn {
+  position: fixed;
+  bottom: 100rpx;
+  right: 40rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  box-shadow: 0 4rpx 20rpx rgba(102, 126, 234, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.publish-icon {
+  font-size: 60rpx;
+  color: #fff;
+  line-height: 60rpx;
+}

@@ -1,0 +1,169 @@
+<wxs module="utils" src="./utils.wxs"></wxs>
+<view class="mark-spot-container">
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <text class="back-btn" bindtap="goBack">←</text>
+    <text class="title">标记钓点</text>
+    <view class="header-right">
+      <text>···</text>
+      <text class="split">|</text>
+      <text>—</text>
+      <text class="split">|</text>
+      <text>◎</text>
+    </view>
+  </view>
+
+  <!-- 滚动公告 -->
+  <view class="announcement-bar">
+    <text class="announcement-icon">📢</text>
+    <view class="announcement-text-wrapper">
+      <text class="announcement-text">请确保钓点真实有效，最近有过垂钓经历。多次标记假钓点将被禁止发布收费钓点或关小黑屋。</text>
+    </view>
+  </view>
+
+  <!-- 选择位置按钮 -->
+  <button class="choose-location-btn" bindtap="getCurrentLocation">
+    <text wx:if="{{!address}}">在地图上选择位置</text>
+    <text wx:else>重新选择位置</text>
+  </button>
+
+  <!-- 位置信息显示 -->
+  <view class="location-info" wx:if="{{address}}">
+    <text class="location-desc">已选择：{{address}}</text>
+    <text class="location-coords" wx:if="{{longitude && latitude}}">
+      坐标：{{longitude}}, {{latitude}}
+    </text>
+  </view>
+
+  <!-- 钓点名称/图片 -->
+  <view class="form-section">
+    <text class="section-title">钓点名称/图片</text>
+    <input class="name-input" placeholder="给钓点取个名称吧" bindinput="inputName" />
+    <button class="upload-img-btn" bindtap="chooseImage">
+      <image src="/images/content/photos/photo-icon.jpeg"></image>
+      <text>上传钓点的图片</text>
+    </button>
+    <!-- 图片预览 -->
+    <image class="preview-img" wx:if="{{imageUrl}}" src="{{imageUrl}}"></image>
+  </view>
+
+  <!-- 钓点类型 -->
+  <view class="form-section">
+    <text class="section-title">钓点类型</text>
+    <view class="tag-group">
+      <view class="tag {{spotType === '野塘' ? 'active' : ''}}" bindtap="chooseType" data-type="野塘">野塘</view>
+      <view class="tag {{spotType === '河流' ? 'active' : ''}}" bindtap="chooseType" data-type="河流">河流</view>
+      <view class="tag {{spotType === '湖库' ? 'active' : ''}}" bindtap="chooseType" data-type="湖库">湖库</view>
+    </view>
+  </view>
+
+  <!-- 大概水深 -->
+  <view class="form-section">
+    <text class="section-title">大概水深</text>
+    <view class="tag-group">
+      <view class="tag {{waterDepth === '1-2米' ? 'active' : ''}}" bindtap="chooseDepth" data-depth="1-2米">1-2米</view>
+      <view class="tag {{waterDepth === '3-5米' ? 'active' : ''}}" bindtap="chooseDepth" data-depth="3-5米">3-5米</view>
+      <view class="tag {{waterDepth === '6-8米' ? 'active' : ''}}" bindtap="chooseDepth" data-depth="6-8米">6-8米</view>
+      <view class="tag {{waterDepth === '8-11米' ? 'active' : ''}}" bindtap="chooseDepth" data-depth="8-11米">8-11米</view>
+      <view class="tag {{waterDepth === '11米以上' ? 'active' : ''}}" bindtap="chooseDepth" data-depth="11米以上">11米以上</view>
+    </view>
+  </view>
+
+  <!-- 适合钓法(多选) -->
+  <view class="form-section">
+    <text class="section-title">适合钓法(多选)</text>
+    <view class="tag-group">
+      <view class="tag {{utils.includes(fishingMethods, '台钓') ? 'active' : ''}}" bindtap="toggleFishingMethod" data-method="台钓">台钓</view>
+      <view class="tag {{utils.includes(fishingMethods, '路亚') ? 'active' : ''}}" bindtap="toggleFishingMethod" data-method="路亚">路亚</view>
+      <view class="tag {{utils.includes(fishingMethods, '传统钓') ? 'active' : ''}}" bindtap="toggleFishingMethod" data-method="传统钓">传统钓</view>
+    </view>
+  </view>
+
+  <!-- 鱼情与风景 -->
+  <view class="form-section">
+    <text class="section-title">钓点详情</text>
+    <textarea class="desc-textarea" placeholder="请描述钓点实用信息，例如：鱼的种类、停车是否方便、是否适合带小孩/露营、岸边环境等~" bindinput="inputDesc"></textarea>
+  </view>
+
+  <!-- 付费查看选项 -->
+  <view class="form-section">
+    <text class="section-title">付费查看</text>
+    <view class="paid-option">
+      <switch checked="{{isPaidSpot}}" bindchange="togglePaidSpot" color="#1890ff" />
+      <text class="paid-label">设为付费钓点</text>
+      <text class="paid-tip">开启后，其他用户需要扫描你的收款码才能查看钓点详情</text>
+    </view>
+
+    <!-- 上传收款码和设置密码区域 -->
+    <view class="payment-code-section" wx:if="{{isPaidSpot}}">
+      <text class="payment-tip-title">上传收款码截图</text>
+      <text class="payment-tip-desc">请上传包含价格的微信/支付宝收款码截图</text>
+
+      <button class="upload-payment-btn" bindtap="choosePaymentCode" wx:if="{{!paymentCodeUrl}}">
+        <image src="/images/content/photos/photo-icon.jpeg"></image>
+        <text>上传收款码</text>
+      </button>
+
+      <view class="payment-code-preview" wx:else>
+        <image class="payment-code-img" src="{{paymentCodeUrl}}" mode="aspectFit"></image>
+        <text class="payment-reupload" bindtap="choosePaymentCode">重新上传</text>
+      </view>
+
+      <!-- 设置查看密码区域 -->
+      <view class="password-setting-section" style="margin-top: 30rpx;">
+        <text class="payment-tip-title">设置查看密码</text>
+        <text class="payment-tip-desc">用户需要输入此6位数密码才能查看钓点详情</text>
+
+        <!-- 自动生成密码按钮 -->
+        <button class="generate-password-btn" bindtap="generatePassword">
+          <text>随机生成6位数密码</text>
+        </button>
+
+        <!-- 或手动输入密码 -->
+        <view class="manual-password-input" style="margin-top: 20rpx;">
+          <input class="password-field"
+                 type="number"
+                 maxlength="6"
+                 placeholder="或手动输入6位数字密码"
+                 value="{{paymentPassword}}"
+                 bindinput="onPasswordInput" />
+        </view>
+
+        <!-- 已生成的密码提示 -->
+        <text class="password-hint" wx:if="{{paymentPassword}}" style="margin-top: 10rpx;">
+          当前密码：{{paymentPassword}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 发布选项 -->
+  <!-- <view class="publish-option">
+    <view class="publish-dynamic-option">
+      <switch checked="{{isPublishDynamic}}" bindchange="togglePublishDynamic" color="#1890ff" />
+      <text class="publish-label">同时发布一条动态</text>
+    </view>
+    <view class="privacy-group" wx:if="{{isPublishDynamic}}">
+      <radio-group bindchange="choosePrivacy">
+        <label class="privacy-item">
+          <radio value="全部可见" checked="{{privacy === '全部可见'}}" />
+          <text>全部可见</text>
+        </label>
+        <label class="privacy-item">
+          <radio value="仅自己可见" checked="{{privacy === '仅自己可见'}}" />
+          <text>仅自己可见</text>
+        </label>
+        <label class="privacy-item">
+          <radio value="粉丝可见" checked="{{privacy === '粉丝可见'}}" />
+          <text>粉丝可见</text>
+        </label>
+      </radio-group>
+    </view>
+  </view> -->
+
+  <!-- 发布按钮 -->
+  <button class="publish-btn" bindtap="submitSpot">
+    <text>发布</text>
+    <image src="/images/content/photos/photo-icon.jpeg"></image>
+  </button>
+</view>

@@ -1,0 +1,487 @@
+<!--pages/settings/settings.wxml-->
+<view class="settings-container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">设置</text>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="settings-section" wx:if="{{isAdmin}}">
+    <view class="section-title">用户管理</view>
+
+    <!-- 封禁用户 -->
+    <view class="function-item" bindtap="showBanUserDialog">
+      <view class="function-left">
+        <text class="function-icon">🚫</text>
+        <view class="config-info">
+          <text class="config-name">封禁用户</text>
+          <text class="config-desc">禁止用户发布钓点</text>
+        </view>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+
+    <!-- 封禁记录 -->
+    <view class="function-item" bindtap="viewBanRecords">
+      <view class="function-left">
+        <text class="function-icon">📋</text>
+        <view class="config-info">
+          <text class="config-name">封禁记录</text>
+          <text class="config-desc">查看所有封禁记录</text>
+        </view>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+
+    <!-- 微信群二维码 -->
+    <view class="function-item" bindtap="showWechatQRDialog">
+      <view class="function-left">
+        <text class="function-icon">👥</text>
+        <view class="config-info">
+          <text class="config-name">微信群二维码</text>
+          <text class="config-desc">设置首页显示的微信群二维码</text>
+        </view>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+
+    <!-- 电工检测配置 -->
+    <view class="function-item" bindtap="showElectricianConfigDialog">
+      <view class="function-left">
+        <text class="function-icon">🔌</text>
+        <view class="config-info">
+          <text class="config-name">电工检测配置</text>
+          <text class="config-desc">设置电工识别阈值</text>
+        </view>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+
+    <!-- 约钓支付配置 -->
+    <view class="function-item" bindtap="showPaymentConfigDialog">
+      <view class="function-left">
+        <text class="function-icon">💰</text>
+        <view class="config-info">
+          <text class="config-name">约钓支付配置</text>
+          <text class="config-desc">设置约钓支付方式和平台收款码</text>
+        </view>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+
+    <!-- 查看电工嫌疑人 -->
+    <view class="function-item" bindtap="viewElectricianSuspects">
+      <view class="function-left">
+        <text class="function-icon">🔍</text>
+        <view class="config-info">
+          <text class="config-name">电工嫌疑人</text>
+          <text class="config-desc">查看疑似电工账号</text>
+        </view>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="settings-section" wx:if="{{isAdmin}}">
+    <view class="section-title">钓点配置</view>
+
+    <!-- 距离校验开关 -->
+    <view class="config-item">
+      <view class="config-left">
+        <text class="config-icon">📍</text>
+        <view class="config-info">
+          <text class="config-name">距离校验</text>
+          <text class="config-desc">标记钓点时检查附近是否有重复钓点</text>
+        </view>
+      </view>
+      <switch
+        class="config-switch"
+        checked="{{distanceCheckEnabled}}"
+        bindchange="toggleDistanceCheck"
+        color="#1890ff"
+      />
+    </view>
+
+    <!-- 距离半径设置 -->
+    <view class="config-item" wx:if="{{distanceCheckEnabled}}">
+      <view class="config-left">
+        <text class="config-icon">📏</text>
+        <view class="config-info">
+          <text class="config-name">校验半径</text>
+          <text class="config-desc">当前设置：{{distanceRadius}} 公里</text>
+        </view>
+      </view>
+      <input
+        class="radius-input"
+        type="digit"
+        placeholder="半径"
+        value="{{distanceRadius}}"
+        bindinput="onRadiusInput"
+      />
+    </view>
+
+    <!-- 保存配置按钮 -->
+    <view class="config-actions">
+      <button class="save-config-btn" bindtap="saveDistanceConfig">保存配置</button>
+    </view>
+  </view>
+
+  <view class="settings-section">
+    <view class="section-title">通用</view>
+
+    <!-- 显示 OpenID (临时调试用) -->
+    <view class="function-item" bindtap="copyOpenid">
+      <view class="function-left">
+        <text class="function-icon">🆔</text>
+        <view class="config-info">
+          <text class="config-name">我的 OpenID</text>
+          <text class="config-desc">点击复制（用于设置为管理员）</text>
+        </view>
+      </view>
+      <text class="function-arrow">复制</text>
+    </view>
+    <view class="function-item" bindtap="clearCache">
+      <view class="function-left">
+        <text class="function-icon">🗑️</text>
+        <text class="function-name">清理缓存</text>
+      </view>
+      <view class="function-right">
+        <text class="cache-size">{{cacheSize}}</text>
+        <text class="function-arrow">→</text>
+      </view>
+    </view>
+
+    <view class="function-item" bindtap="checkUpdate">
+      <view class="function-left">
+        <text class="function-icon">🔄</text>
+        <text class="function-name">检查更新</text>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="settings-section">
+    <view class="section-title">关于</view>
+    <view class="function-item" bindtap="about">
+      <view class="function-left">
+        <text class="function-icon">ℹ️</text>
+        <text class="function-name">关于我们</text>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+
+    <view class="function-item" bindtap="feedback">
+      <view class="function-left">
+        <text class="function-icon">💬</text>
+        <text class="function-name">意见反馈</text>
+      </view>
+      <text class="function-arrow">→</text>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-wrapper">
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text class="version-text">版本 1.0.0</text>
+  </view>
+
+  <!-- 封禁用户弹窗 -->
+  <view class="modal-mask" wx:if="{{showBanDialog}}" bindtap="hideBanDialog">
+    <view class="modal-content" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">封禁用户</text>
+        <text class="modal-close" bindtap="hideBanDialog">×</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="form-label">用户OpenID</text>
+          <input
+            class="form-input"
+            placeholder="请输入要封禁的用户OpenID"
+            value="{{banUserId}}"
+            bindinput="onBanUserIdInput"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">封禁类型</text>
+          <radio-group class="radio-group" bindchange="onBanTypeChange">
+            <label class="radio-item">
+              <radio value="all" checked="{{banType === 'all'}}" />
+              <text>禁止所有</text>
+            </label>
+            <label class="radio-item">
+              <radio value="paid" checked="{{banType === 'paid'}}" />
+              <text>禁止收费</text>
+            </label>
+            <label class="radio-item">
+              <radio value="free" checked="{{banType === 'free'}}" />
+              <text>禁止免费</text>
+            </label>
+          </radio-group>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">封禁时长（天）</text>
+          <input
+            class="form-input"
+            type="digit"
+            placeholder="留空为永久封禁"
+            value="{{banDuration}}"
+            bindinput="onBanDurationInput"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">封禁原因</text>
+          <textarea
+            class="form-textarea"
+            placeholder="请输入封禁原因"
+            value="{{banReason}}"
+            bindinput="onBanReasonInput"
+            maxlength="200"
+          />
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hideBanDialog">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmBanUser">确认封禁</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 封禁记录弹窗 -->
+  <view class="modal-mask" wx:if="{{showBanRecords}}" bindtap="hideBanRecords">
+    <view class="modal-content large" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">封禁记录</text>
+        <text class="modal-close" bindtap="hideBanRecords">×</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="ban-list">
+          <view class="ban-item" wx:for="{{banRecords}}" wx:key="id">
+            <view class="ban-header">
+              <text class="ban-user-id">用户: {{item.user_id}}</text>
+              <text class="ban-type {{item.ban_type}}">{{item.ban_type_text}}</text>
+            </view>
+            <view class="ban-info">
+              <text class="ban-reason">原因: {{item.reason}}</text>
+              <text class="ban-time">时间: {{item.banned_at}}</text>
+              <text class="ban-expire" wx:if="{{item.expires_at}}">过期: {{item.expires_at}}</text>
+              <text class="ban-expire" wx:else>永久封禁</text>
+            </view>
+            <view class="ban-actions" wx:if="{{item.is_active}}">
+              <button class="unban-btn" catchtap="unbanUser" data-id="{{item.id}}">解封</button>
+            </view>
+          </view>
+
+          <view class="empty-tip" wx:if="{{banRecords.length === 0}}">
+            <text>暂无封禁记录</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 微信群二维码设置弹窗 -->
+  <view class="modal-mask" wx:if="{{showWechatQRDialog}}" bindtap="hideWechatQRDialog">
+    <view class="modal-content" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">设置微信群二维码</text>
+        <text class="modal-close" bindtap="hideWechatQRDialog">×</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="form-label">当前二维码</text>
+          <view class="current-qr" wx:if="{{currentWechatQR}}">
+            <image class="current-qr-img" src="{{currentWechatQR}}" mode="aspectFit" />
+          </view>
+          <text class="no-qr-tip" wx:else>暂未设置二维码</text>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">上传新二维码</text>
+          <button class="upload-btn" bindtap="chooseWechatQR">
+            <text wx:if="{{!uploadingWechatQR}}">选择图片</text>
+            <text wx:else>上传中...</text>
+          </button>
+        </view>
+
+        <view class="form-item" wx:if="{{newWechatQR}}">
+          <text class="form-label">预览</text>
+          <image class="preview-qr-img" src="{{newWechatQR}}" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hideWechatQRDialog">取消</button>
+        <button class="modal-btn confirm" bindtap="saveWechatQR" disabled="{{!newWechatQR || uploadingWechatQR}}">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 电工检测配置弹窗 -->
+  <view class="modal-mask" wx:if="{{showElectricianConfigDialog}}" bindtap="hideElectricianConfigDialog">
+    <view class="modal-content" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">电工检测配置</text>
+        <text class="modal-close" bindtap="hideElectricianConfigDialog">×</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="form-label">每个钓点至少被举报人数</text>
+          <input
+            class="form-input"
+            type="digit"
+            placeholder="默认5人"
+            value="{{electricianConfig.min_reports_per_spot}}"
+            bindinput="onMinReportsInput"
+          />
+          <text class="form-hint">钓点需要被至少多少个不同用户举报才纳入分析</text>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">最少涉及钓点数量</text>
+          <input
+            class="form-input"
+            type="digit"
+            placeholder="默认2个"
+            value="{{electricianConfig.min_suspicious_spots}}"
+            bindinput="onMinSpotsInput"
+          />
+          <text class="form-hint">用户需要在至少多少个被举报钓点付费才被标记为嫌疑人</text>
+        </view>
+
+        <view class="config-info-box">
+          <text class="info-title">检测逻辑说明</text>
+          <text class="info-text">系统会统计最近30天内被举报的钓点，找出在其中多个钓点都付费的用户，推送给管理员核实。</text>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hideElectricianConfigDialog">取消</button>
+        <button class="modal-btn confirm" bindtap="saveElectricianConfig">保存配置</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 电工嫌疑人弹窗 -->
+  <view class="modal-mask" wx:if="{{showSuspectsDialog}}" bindtap="hideSuspectsDialog">
+    <view class="modal-content large" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">电工嫌疑人列表</text>
+        <text class="modal-close" bindtap="hideSuspectsDialog">×</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="suspects-list" wx:if="{{suspects.length > 0}}">
+          <view class="suspect-item" wx:for="{{suspects}}" wx:key="user_id">
+            <view class="suspect-header">
+              <text class="suspect-user-id">用户: {{item.user_id}}</text>
+              <text class="suspect-count">涉及 {{item.spot_count}} 个钓点</text>
+            </view>
+            <view class="suspect-spots">
+              <text class="spots-label">涉事钓点ID：</text>
+              <text class="spots-list">{{item.suspicious_spots.join(', ')}}</text>
+            </view>
+            <view class="suspect-actions">
+              <button class="suspect-btn ban" catchtap="banSuspect" data-id="{{item.user_id}}">封禁用户</button>
+              <button class="suspect-btn copy" catchtap="copySuspectId" data-id="{{item.user_id}}">复制ID</button>
+            </view>
+          </view>
+        </view>
+
+        <view class="empty-tip" wx:else>
+          <text>暂未发现电工嫌疑人</text>
+          <text class="empty-hint">调整配置阈值或等待更多举报数据</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 约钓支付配置弹窗 -->
+  <view class="modal-mask" wx:if="{{showPaymentConfigDialog}}" bindtap="hidePaymentConfigDialog">
+    <view class="modal-content" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">约钓支付配置</text>
+        <text class="modal-close" bindtap="hidePaymentConfigDialog">×</text>
+      </view>
+
+      <view class="modal-body">
+        <!-- 支付方式选择 -->
+        <view class="form-section">
+          <text class="section-label">支付方式</text>
+
+          <radio-group class="payment-mode-select" bindchange="onPaymentModeChange">
+            <label class="payment-mode-option {{paymentConfig.default_mode === 'direct' ? 'active' : ''}}">
+              <radio value="direct" checked="{{paymentConfig.default_mode === 'direct'}}" color="#667eea" />
+              <view class="mode-content">
+                <text class="mode-icon">👤</text>
+                <view class="mode-info">
+                  <text class="mode-title">直接付给发布者</text>
+                  <text class="mode-desc">队员扫码直接付款给发布者，发布者需上传收款码</text>
+                </view>
+              </view>
+            </label>
+
+            <label class="payment-mode-option {{paymentConfig.default_mode === 'platform' ? 'active' : ''}}">
+              <radio value="platform" checked="{{paymentConfig.default_mode === 'platform'}}" color="#667eea" />
+              <view class="mode-content">
+                <text class="mode-icon">🏦</text>
+                <view class="mode-info">
+                  <text class="mode-title">平台托管</text>
+                  <text class="mode-desc">平台代收，活动结束后平台结算给发布者</text>
+                </view>
+              </view>
+            </label>
+          </radio-group>
+        </view>
+
+        <!-- 平台收款码 -->
+        <view class="form-section" wx:if="{{paymentConfig.default_mode === 'platform'}}">
+          <text class="section-label">平台收款码</text>
+          <view class="qr-code-section">
+            <view class="current-qr" wx:if="{{paymentConfig.platform_qr_code}}">
+              <text class="qr-label">当前收款码：</text>
+              <image class="qr-img" src="{{paymentConfig.platform_qr_code}}" mode="aspectFit" />
+            </view>
+
+            <view class="upload-section">
+              <button class="upload-btn" bindtap="choosePlatformQR" disabled="{{uploadingPlatformQR}}">
+                <text wx:if="{{!uploadingPlatformQR}}">更换收款码</text>
+                <text wx:else>上传中...</text>
+              </button>
+
+              <view class="preview-qr" wx:if="{{newPlatformQR}}">
+                <text class="qr-label">预览：</text>
+                <image class="qr-img" src="{{newPlatformQR}}" mode="aspectFit" />
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 说明信息 -->
+        <view class="config-info-box">
+          <text class="info-title">💡 配置说明</text>
+          <text class="info-text">• 支付方式只能选择一种：平台收款或用户收款</text>
+          <text class="info-text">• 直接付给发布者：用户发布约钓时需上传个人收款码</text>
+          <text class="info-text">• 平台托管：用户付款给平台，活动结束后平台结算给发布者</text>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hidePaymentConfigDialog">取消</button>
+        <button class="modal-btn confirm" bindtap="savePaymentConfig" disabled="{{uploadingPlatformQR}}">保存配置</button>
+      </view>
+    </view>
+  </view>
+</view>

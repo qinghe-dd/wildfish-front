@@ -1,0 +1,103 @@
+<!--pages/mall/mall.wxml-->
+<view class="dynamic-container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">钓点动态</text>
+    <text class="page-subtitle">发现最新分享的钓点</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 钓点列表 -->
+  <view class="spot-list" wx:if="{{!loading}}">
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{spotList.length === 0}}">
+      <text class="empty-icon">🎣</text>
+      <text class="empty-text">暂无钓点动态</text>
+    </view>
+
+    <!-- 钓点卡片 -->
+    <view class="spot-card" wx:for="{{spotList}}" wx:key="id">
+      <!-- 钓点图片 -->
+      <view class="spot-image-wrapper" bindtap="goToSpotDetail" data-id="{{item.id}}">
+        <image
+          class="spot-image"
+          src="{{item.image}}"
+          mode="aspectFill"
+          lazy-load="{{true}}"
+        />
+        <!-- 付费标签 -->
+        <view class="paid-badge" wx:if="{{item.is_paid_spot && !item.has_paid}}">
+          <text class="paid-icon">🔒</text>
+          <text class="paid-text">付费内容</text>
+        </view>
+      </view>
+
+      <!-- 钓点信息 -->
+      <view class="spot-info">
+        <view class="spot-header" bindtap="goToSpotDetail" data-id="{{item.id}}">
+          <text class="spot-name">{{item.name}}</text>
+          <view class="spot-meta">
+            <text class="spot-type">{{item.spot_type}}</text>
+            <text class="spot-distance">{{item.distance}}</text>
+          </view>
+        </view>
+
+        <!-- 钓点描述 -->
+        <text class="spot-desc" bindtap="goToSpotDetail" data-id="{{item.id}}">{{item.description}}</text>
+
+        <!-- 发布者信息 -->
+        <view class="owner-info">
+          <view class="owner-left">
+            <text class="owner-label">发布者</text>
+            <text class="owner-name">{{item.owner_nickname}}</text>
+
+            <!-- 手机号 -->
+            <view class="contact-row" wx:if="{{item.owner_phone}}">
+              <text class="contact-label">📱 手机：</text>
+              <text class="contact-value">{{item.owner_phone}}</text>
+              <text class="contact-action" catchtap="copyPhone" data-phone="{{item.owner_phone}}">复制</text>
+              <text class="contact-action call-action" catchtap="makeCall" data-phone="{{item.owner_phone}}">拨打</text>
+            </view>
+
+            <!-- 微信号 -->
+            <view class="contact-row" wx:if="{{item.owner_wechat}}">
+              <text class="contact-label">💬 微信：</text>
+              <text class="contact-value">{{item.owner_wechat}}</text>
+              <text class="contact-action" catchtap="copyWechat" data-wechat="{{item.owner_wechat}}">复制</text>
+            </view>
+
+            <!-- 如果没有手机号和微信号，显示ID -->
+            <text class="owner-id" wx:if="{{!item.owner_phone && !item.owner_wechat}}">ID: {{item.owner_id}}</text>
+          </view>
+
+          <!-- 联系按钮 -->
+          <button class="contact-btn" catchtap="contactOwner" data-item="{{item}}">
+            <text class="contact-icon">💬</text>
+            <text>联系</text>
+          </button>
+        </view>
+
+        <!-- 密码提示（需要密码的付费钓点） -->
+        <view class="password-hint" wx:if="{{item.is_paid_spot && item.has_password && !item.has_paid}}">
+          <text class="hint-icon">🔐</text>
+          <text class="hint-text">需要密码才能查看</text>
+          <text class="copy-link" catchtap="copyOwnerId" data-id="{{item.owner_id}}">复制发布者ID</text>
+        </view>
+
+        <!-- 底部信息栏 -->
+        <view class="card-footer">
+          <text class="create-time">{{item.created_at}}</text>
+          <view class="footer-actions">
+            <text class="action-btn" bindtap="goToSpotDetail" data-id="{{item.id}}">
+              查看详情 →
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

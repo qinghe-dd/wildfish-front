@@ -1,0 +1,283 @@
+.teams-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* 顶部导航栏 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.back-btn {
+  font-size: 36rpx;
+  font-weight: bold;
+  padding: 0 10rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.create-btn {
+  font-size: 28rpx;
+  padding: 8rpx 20rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20rpx;
+}
+
+/* 状态筛选 */
+.filter-tabs {
+  display: flex;
+  background: #fff;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #667eea;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: #667eea;
+  border-radius: 2rpx;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 团队列表 */
+.teams-list {
+  padding: 20rpx;
+}
+
+.team-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.team-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.team-status {
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.team-status.recruiting {
+  background: linear-gradient(135deg, #00B26A 0%, #00a859 100%);
+  color: #fff;
+}
+
+.team-status.full {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.team-status.started {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: #fff;
+}
+
+.team-status.finished {
+  background: #f5f5f5;
+  color: #999;
+}
+
+/* 团队信息 */
+.team-info {
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+  font-size: 26rpx;
+}
+
+.info-label {
+  color: #666;
+  min-width: 140rpx;
+}
+
+.info-value {
+  color: #333;
+  flex: 1;
+}
+
+.fee-tag {
+  margin-left: 20rpx;
+  padding: 4rpx 12rpx;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff5500 100%);
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.free-tag {
+  margin-left: 20rpx;
+  padding: 4rpx 12rpx;
+  background: linear-gradient(135deg, #00B26A 0%, #00a859 100%);
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.info-value.location {
+  color: #333;
+  font-weight: 500;
+}
+
+.info-value.distance {
+  color: #667eea;
+  font-weight: 500;
+}
+
+/* 团队描述 */
+.team-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  padding: 20rpx;
+  background: #f9f9f9;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 底部信息 */
+.team-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.captain-info {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+}
+
+.captain-name {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.captain-label {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 8rpx;
+}
+
+.member-status {
+  display: flex;
+  gap: 10rpx;
+}
+
+.status-badge {
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.status-badge.approved {
+  background: linear-gradient(135deg, #00B26A 0%, #00a859 100%);
+  color: #fff;
+}
+
+.status-badge.pending {
+  background: #faad14;
+  color: #fff;
+}
+
+.status-badge.rejected {
+  background: #f5f5f5;
+  color: #999;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #999;
+}

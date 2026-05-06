@@ -1,0 +1,237 @@
+<view class="team-detail-container">
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <text class="back-btn" bindtap="goBack">←</text>
+    <text class="title">团队详情</text>
+    <text class="share-btn" bindtap="shareTeam">分享</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 团队详情内容 -->
+  <scroll-view class="detail-scroll" scroll-y="{{true}}" wx:if="{{!loading && teamDetail}}">
+    <!-- 团队头部 -->
+    <view class="team-header">
+      <text class="team-title">{{teamDetail.title}}</text>
+      <view class="team-meta">
+        <view class="status-badge {{teamDetail.status}}">
+          <text>{{teamDetail.statusText}}</text>
+        </view>
+        <view class="member-count">
+          <text>👥 {{teamDetail.current_members}}/{{teamDetail.max_members}}人</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 团队代码卡片 -->
+    <view class="team-code-card" wx:if="{{teamDetail.team_code}}">
+      <text class="code-label">团队代码</text>
+      <view class="code-value">
+        <text>{{teamDetail.team_code}}</text>
+        <text class="copy-btn" bindtap="copyTeamCode">复制</text>
+      </view>
+      <text class="code-hint">分享给好友，扫码即可加入</text>
+    </view>
+
+    <!-- 钓点和时间信息 -->
+    <view class="info-section">
+      <view class="info-item" wx:if="{{teamDetail.spot_name}}">
+        <text class="info-label">🎣 钓点</text>
+        <text class="info-value">{{teamDetail.spot_name}}</text>
+      </view>
+      <view class="info-item" wx:if="{{teamDetail.location_name && !teamDetail.spot_name}}">
+        <text class="info-label">📍 位置</text>
+        <text class="info-value">{{teamDetail.location_name}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">📅 时间</text>
+        <text class="info-value">{{teamDetail.fishingDateText}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">💰 费用</text>
+        <text class="info-value fee" wx:if="{{teamDetail.is_paid_team}}">{{teamDetail.fee_amount}}元/人</text>
+        <text class="info-value free" wx:else>免费</text>
+      </view>
+    </view>
+
+    <!-- 活动描述 -->
+    <view class="description-section" wx:if="{{teamDetail.description}}">
+      <text class="section-title">活动描述</text>
+      <text class="description-text">{{teamDetail.description}}</text>
+    </view>
+
+    <!-- 队长信息 -->
+    <view class="captain-section">
+      <text class="section-title">队长</text>
+      <view class="captain-card">
+        <image class="captain-avatar" src="{{teamDetail.captain_avatar || '/images/avatar-default.png'}}" />
+        <view class="captain-info">
+          <text class="captain-name">{{teamDetail.captain_nickname || '钓友'}}</text>
+          <text class="captain-time">{{teamDetail.created_at_text}} 创建</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 团队成员 -->
+    <view class="members-section">
+      <view class="section-header">
+        <text class="section-title">团队成员 ({{members.length}})</text>
+      </view>
+
+      <view class="members-list" wx:if="{{members.length > 0}}">
+        <view class="member-item" wx:for="{{members}}" wx:key="id">
+          <image class="member-avatar" src="{{item.user_avatar || '/images/avatar-default.png'}}" />
+          <view class="member-info">
+            <text class="member-name">{{item.user_nickname || '钓友'}}</text>
+            <view class="member-status {{item.status}}">
+              <text>{{item.statusText}}</text>
+            </view>
+          </view>
+          <!-- 队长可以审核 -->
+          <view class="member-actions" wx:if="{{teamDetail.is_captain && item.status === 'pending'}}">
+            <button class="action-btn approve" bindtap="approveMember" data-id="{{item.id}}" data-action="approve">通过</button>
+            <button class="action-btn reject" bindtap="approveMember" data-id="{{item.id}}" data-action="reject">拒绝</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 留言板 -->
+    <view class="messages-section">
+      <view class="section-header">
+        <text class="section-title">团队留言</text>
+      </view>
+
+      <!-- 留言列表 -->
+      <view class="messages-list" wx:if="{{messages.length > 0}}">
+        <view class="message-item {{item.message_type}}" wx:for="{{messages}}" wx:key="id">
+          <!-- 系统消息 -->
+          <view wx:if="{{item.message_type === 'system'}}" class="system-message">
+            <text class="system-icon">📢</text>
+            <text class="system-text">{{item.content}}</text>
+          </view>
+
+          <!-- 用户消息 -->
+          <view wx:else class="user-message">
+            <image class="message-avatar" src="{{item.sender_avatar || '/images/avatar-default.png'}}" />
+            <view class="message-content-wrapper">
+              <text class="sender-name">{{item.sender_nickname || '钓友'}}</text>
+              <view class="message-bubble">
+                <text class="message-text">{{item.content}}</text>
+              </view>
+              <image class="message-image" src="{{item.image_url}}" mode="widthFix" wx:if="{{item.image_url}}" bindtap="previewImage" data-url="{{item.image_url}}" />
+              <text class="message-time">{{item.created_at_text}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="messages-empty" wx:elif="{{!messagesLoading}}">
+        <text class="empty-icon">💬</text>
+        <text class="empty-text">暂无留言</text>
+        <text class="empty-hint">说点什么吧~</text>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="messages-loading" wx:if="{{messagesLoading}}">
+        <text>加载中...</text>
+      </view>
+    </view>
+
+    <!-- 底部间距 -->
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- 底部输入框和操作按钮 -->
+  <view class="bottom-bar" wx:if="{{!loading && teamDetail}}">
+    <!-- 已加入成员 -->
+    <view class="input-bar" wx:if="{{teamDetail.is_member && teamDetail.member_status === 'approved'}}">
+      <input
+        class="message-input"
+        placeholder="说点什么..."
+        value="{{inputMessage}}"
+        bindinput="onMessageInput"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+      />
+      <button class="send-btn" bindtap="sendMessage">发送</button>
+      <button class="image-btn" bindtap="chooseImage">+</button>
+    </view>
+
+    <!-- 待审核成员 -->
+    <view class="action-bar" wx:elif="{{teamDetail.member_status === 'pending'}}">
+      <text class="pending-text">⏳ 等待队长审核...</text>
+    </view>
+
+    <!-- 未加入用户 -->
+    <view class="action-bar" wx:elif="{{!teamDetail.is_member && !teamDetail.is_captain}}">
+      <!-- 免费团队直接加入 -->
+      <button class="join-btn free" bindtap="joinTeam" wx:if="{{!teamDetail.is_paid_team}}">
+        <text>加入团队</text>
+      </button>
+
+      <!-- 付费团队显示付费提示 -->
+      <button class="join-btn paid" bindtap="showPaymentModal" wx:else>
+        <text>💰 付费加入 ({{teamDetail.fee_amount}}元)</text>
+      </button>
+    </view>
+
+    <!-- 队长 -->
+    <view class="action-bar" wx:if="{{teamDetail.is_captain}}">
+      <button class="manage-btn" bindtap="showManageMenu">
+        <text>管理团队</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 付费弹窗 -->
+  <view class="payment-modal" wx:if="{{showPaymentModal}}" catchtouchmove="preventScroll">
+    <view class="modal-mask" bindtap="hidePaymentModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">付费加入</text>
+        <text class="modal-close" bindtap="hidePaymentModal">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="fee-info">
+          <text class="fee-amount">¥{{teamDetail.fee_amount}}</text>
+          <text class="fee-desc">向队长支付后获取验证码</text>
+        </view>
+
+        <view class="qr-code-area" wx:if="{{teamDetail.payment_qr_code_url}}">
+          <image class="payment-qr" src="{{teamDetail.payment_qr_code_url}}" mode="aspectFit" />
+          <text class="qr-hint">长按保存收款码</text>
+        </view>
+
+        <view class="verify-input-area">
+          <text class="verify-label">验证码</text>
+          <input
+            class="verify-input"
+            type="number"
+            placeholder="输入6位验证码"
+            maxlength="6"
+            value="{{verifyCode}}"
+            bindinput="onVerifyCodeInput"
+          />
+        </view>
+
+        <view class="team-code-area">
+          <text class="team-code-label">团队代码</text>
+          <view class="team-code-wrapper">
+            <text class="team-code">{{teamDetail.team_code}}</text>
+            <text class="copy-btn" bindtap="copyTeamCode">复制</text>
+          </view>
+          <text class="team-code-hint">付款后向队长提供此代码以获取验证码</text>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hidePaymentModal">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmJoin">确认加入</button>
+      </view>
+    </view>
+  </view>
+</view>

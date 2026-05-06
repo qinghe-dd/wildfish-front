@@ -1,0 +1,105 @@
+<!--pages/post-detail/post-detail.wxml-->
+<view class="detail-container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 动态详情 -->
+  <view class="post-detail" wx:if="{{!loading && post}}">
+    <!-- 用户信息 -->
+    <view class="post-header">
+      <image class="user-avatar" src="{{post.user_avatar || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <text class="user-nickname">{{post.user_nickname || '钓鱼达人'}}</text>
+        <text class="post-time">{{post.created_at}}</text>
+      </view>
+    </view>
+
+    <!-- 动态内容 -->
+    <view class="post-content">
+      <text class="content-text">{{post.content}}</text>
+    </view>
+
+    <!-- 动态图片 -->
+    <view class="post-images" wx:if="{{post.images && post.images.length > 0}}">
+      <image
+        class="post-image {{post.images.length === 1 ? 'single' : 'multiple'}}"
+        wx:for="{{post.images}}"
+        wx:for-item="image"
+        wx:key="*this"
+        src="{{image}}"
+        mode="aspectFill"
+        bindtap="previewImage"
+        data-url="{{image}}"
+        data-urls="{{post.images}}"
+      ></image>
+    </view>
+
+    <!-- 位置和关联钓点 -->
+    <view class="post-meta">
+      <view class="meta-item" wx:if="{{post.location_name}}">
+        <text class="meta-icon">📍</text>
+        <text class="meta-text">{{post.location_name}}</text>
+      </view>
+      <view class="meta-item" wx:if="{{post.spot_id}}">
+        <text class="meta-icon">🎣</text>
+        <text class="meta-text">{{post.spot_name || '关联钓点'}}</text>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="post-footer">
+      <view class="footer-item" bindtap="toggleLike">
+        <text class="footer-icon {{post.is_liked ? 'liked' : ''}}">{{post.is_liked ? '❤️' : '🤍'}}</text>
+        <text class="footer-text">{{post.like_count || '点赞'}}</text>
+      </view>
+      <view class="footer-item">
+        <text class="footer-icon">💬</text>
+        <text class="footer-text">{{post.comment_count || '评论'}}</text>
+      </view>
+      <view class="footer-item">
+        <text class="footer-icon">↗️</text>
+        <text class="footer-text">分享</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论区 -->
+  <view class="comments-section" wx:if="{{!loading}}">
+    <view class="section-title">评论 {{post && post.comment_count > 0 ? '(' + post.comment_count + ')' : ''}}</view>
+
+    <!-- 评论列表 -->
+    <view class="comments-list" wx:if="{{comments.length > 0}}">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+        <image class="comment-avatar" src="{{item.user_avatar || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
+        <view class="comment-content">
+          <view class="comment-header">
+            <text class="comment-nickname">{{item.user_nickname || '钓鱼达人'}}</text>
+            <text class="comment-time">{{item.created_at}}</text>
+          </view>
+          <text class="comment-text">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-comments" wx:if="{{comments.length === 0}}">
+      <text>还没有评论，快来抢沙发~</text>
+    </view>
+  </view>
+
+  <!-- 底部评论输入框 -->
+  <view class="comment-input-wrapper">
+    <input
+      class="comment-input"
+      type="text"
+      placeholder="说点什么..."
+      value="{{commentText}}"
+      bindinput="onCommentInput"
+      bindconfirm="submitComment"
+      confirm-type="send"
+    />
+    <button class="send-btn" bindtap="submitComment" disabled="{{!commentText}}">发送</button>
+  </view>
+</view>

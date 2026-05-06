@@ -1,0 +1,224 @@
+<view class="create-container">
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <text class="back-btn" bindtap="goBack">←</text>
+    <text class="title">发布约钓</text>
+    <text class="publish-btn" bindtap="publishTeam">发布</text>
+  </view>
+
+  <!-- 表单内容 -->
+  <view class="form-content">
+    <!-- 活动标题 -->
+    <view class="form-item">
+      <text class="label required">活动标题</text>
+      <input
+        class="input"
+        placeholder="如：今晚勇闯毒区，夜钓大鲤鱼"
+        value="{{form.title}}"
+        bindinput="onTitleInput"
+        maxlength="50"
+      />
+      <text class="char-count">{{form.title.length}}/50</text>
+    </view>
+
+    <!-- 钓点位置选择 -->
+    <view class="form-item">
+      <text class="label">钓点位置</text>
+
+      <!-- 已选择钓点 -->
+      <view class="selected-spot" wx:if="{{form.spot_id}}">
+        <view class="spot-info">
+          <text class="spot-name">{{form.spot_name}}</text>
+          <text class="spot-address" wx:if="{{form.spot_address}}">📍 {{form.spot_address}}</text>
+          <text class="spot-distance" wx:if="{{form.spot_distance}}">距离: {{form.spot_distance}}</text>
+        </view>
+        <view class="spot-actions">
+          <button class="spot-btn remove" bindtap="removeSpot">移除</button>
+        </view>
+      </view>
+
+      <!-- 未选择钓点 -->
+      <view class="spot-options" wx:else>
+        <!-- 有钓点时显示下拉选择 -->
+        <view wx:if="{{mySpots.length > 0}}">
+          <picker
+            mode="selector"
+            range="{{mySpots}}"
+            range-key="name"
+            value="{{spotIndex}}"
+            bindchange="onSpotChange"
+          >
+            <view class="picker-wrapper">
+              <view class="picker-content">
+                <text class="picker-icon">📍</text>
+                <view class="picker-info">
+                  <text class="picker-title">从我的钓点选择</text>
+                  <text class="picker-desc" wx:if="{{spotIndex >= 0}}">
+                    {{mySpots[spotIndex].name}} - {{mySpots[spotIndex].address || '暂无地址'}}
+                  </text>
+                  <text class="picker-desc" wx:else>请选择已发布的钓点</text>
+                </view>
+              </view>
+              <text class="picker-arrow">▼</text>
+            </view>
+          </picker>
+
+          <view class="option-divider">
+            <text class="divider-text">或</text>
+          </view>
+        </view>
+
+        <!-- 无钓点提示 -->
+        <view class="no-spots-tip" wx:if="{{mySpots.length === 0}}">
+          <text class="tip-text">您还没有发布过钓点</text>
+          <navigator url="/pages/markspot/markspot" class="goto-mark-btn">去标记钓点</navigator>
+        </view>
+
+        <!-- 手动输入 -->
+        <view class="option-card manual">
+          <text class="option-icon">✏️</text>
+          <view class="option-content">
+            <text class="option-title">手动输入位置</text>
+            <text class="option-desc">直接输入钓点位置名称</text>
+          </view>
+        </view>
+
+        <input
+          class="manual-input"
+          placeholder="如：XX水库南岸、XX河流下游等"
+          value="{{form.location_name}}"
+          bindinput="onLocationInput"
+          maxlength="50"
+        />
+      </view>
+    </view>
+
+    <!-- 约钓时间 -->
+    <view class="form-item">
+      <text class="label required">约钓时间</text>
+      <picker
+        mode="multiSelector"
+        range="{{dateRange}}"
+        range-key="{{dateRangeKey}}"
+        value="{{dateIndex}}"
+        bindchange="onDateChange"
+      >
+        <view class="picker-value {{form.fishing_date ? '' : 'placeholder'}}">
+          {{form.fishing_date_text || '请选择约钓时间'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 人数设置 -->
+    <view class="form-item">
+      <text class="label required">人数限制</text>
+      <view class="member-range">
+        <view class="range-control">
+          <text class="range-label">最少</text>
+          <input
+            class="range-input"
+            type="number"
+            value="{{form.min_members}}"
+            bindinput="onMinMembersInput"
+          />
+          <text class="range-unit">人</text>
+        </view>
+        <text class="range-separator">~</text>
+        <view class="range-control">
+          <text class="range-label">最多</text>
+          <input
+            class="range-input"
+            type="number"
+            value="{{form.max_members}}"
+            bindinput="onMaxMembersInput"
+          />
+          <text class="range-unit">人</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 是否付费 -->
+    <view class="form-item">
+      <text class="label">费用设置</text>
+      <view class="fee-toggle">
+        <view class="toggle-option {{form.is_paid_team === 0 ? 'active' : ''}}" bindtap="setFeeType" data-type="0">
+          <text>免费组队</text>
+        </view>
+        <view class="toggle-option {{form.is_paid_team === 1 ? 'active' : ''}}" bindtap="setFeeType" data-type="1">
+          <text>付费组队</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 费用金额 -->
+    <view class="form-item" wx:if="{{form.is_paid_team === 1}}">
+      <text class="label required">费用金额</text>
+      <view class="fee-input-wrapper">
+        <text class="fee-symbol">¥</text>
+        <input
+          class="fee-input"
+          type="digit"
+          placeholder="0.00"
+          value="{{form.fee_amount}}"
+          bindinput="onFeeAmountInput"
+        />
+        <text class="fee-unit">元/人</text>
+      </view>
+    </view>
+
+    <!-- 收款码 -->
+    <view class="form-item" wx:if="{{form.is_paid_team === 1 && form.payment_mode === 'direct'}}">
+      <text class="label required">收款码</text>
+      <button class="upload-qr-btn" bindtap="uploadPaymentQr" wx:if="{{!form.payment_qr_code_url}}">
+        <text class="upload-icon">+</text>
+        <text>上传收款码</text>
+      </button>
+      <view class="qr-preview" wx:else>
+        <image class="qr-image" src="{{form.payment_qr_code_url}}" mode="aspectFit" />
+        <text class="remove-qr" bindtap="removePaymentQr">删除</text>
+      </view>
+    </view>
+
+    <!-- 平台收款码提示 -->
+    <view class="form-item" wx:if="{{form.is_paid_team === 1 && form.payment_mode === 'platform'}}">
+      <text class="label">收款说明</text>
+      <view class="platform-tip">
+        <text class="tip-title">🏦 平台托管模式</text>
+        <text class="tip-text">• 队员付款给平台</text>
+        <text class="tip-text">• 活动结束后，平台会通知您提供收款码</text>
+        <text class="tip-text">• 平台核对后将款项转给您</text>
+      </view>
+    </view>
+
+    <!-- 是否需要审核 -->
+    <view class="form-item">
+      <text class="label">加入审核</text>
+      <view class="switch-row">
+        <text class="switch-desc">需要审核后才能加入团队</text>
+        <switch checked="{{form.require_approval === 1}}" bindchange="onApprovalChange" color="#667eea" />
+      </view>
+    </view>
+
+    <!-- 活动描述 -->
+    <view class="form-item">
+      <text class="label">活动描述</text>
+      <textarea
+        class="textarea"
+        placeholder="描述一下约钓计划、装备要求、注意事项等..."
+        value="{{form.description}}"
+        bindinput="onDescriptionInput"
+        maxlength="500"
+        auto-height
+      />
+      <text class="char-count">{{form.description.length}}/500</text>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tips">
+      <text class="tips-title">💡 温馨提示</text>
+      <text class="tips-text">• 发布后会自动生成团队专属代码，可分享给好友扫码加入</text>
+      <text class="tips-text">• 免费组队可直接加入，付费组队需付费后获取验证码加入</text>
+      <text class="tips-text">• 开启审核后，队员加入需要队长审核通过</text>
+    </view>
+  </view>
+</view>

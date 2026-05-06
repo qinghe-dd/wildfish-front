@@ -1,0 +1,293 @@
+/* pages/mall/mall.wxss */
+.dynamic-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+/* 页面标题 */
+.page-header {
+  background: linear-gradient(135deg, #00B26A 0%, #009958 100%);
+  padding: 40rpx 30rpx 30rpx;
+  color: white;
+}
+
+.page-title {
+  display: block;
+  font-size: 44rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.page-subtitle {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.loading-text {
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 钓点列表 */
+.spot-list {
+  padding: 20rpx 30rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 钓点卡片 */
+.spot-card {
+  background: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 钓点图片 */
+.spot-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 360rpx;
+}
+
+.spot-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 付费标签 */
+.paid-badge {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10rpx);
+  border-radius: 30rpx;
+  padding: 10rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.paid-icon {
+  font-size: 24rpx;
+}
+
+.paid-text {
+  color: white;
+  font-size: 22rpx;
+}
+
+/* 钓点信息 */
+.spot-info {
+  padding: 24rpx;
+}
+
+.spot-header {
+  margin-bottom: 16rpx;
+}
+
+.spot-name {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.spot-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.spot-type {
+  background: #E8F8F0;
+  color: #00B26A;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.spot-distance {
+  color: #999;
+  font-size: 24rpx;
+}
+
+/* 钓点描述 */
+.spot-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+/* 发布者信息 */
+.owner-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #F8F9FA;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.owner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.owner-label {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.owner-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.owner-id {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 联系方式行 */
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 4rpx;
+}
+
+.contact-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.contact-value {
+  flex: 1;
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.contact-action {
+  font-size: 22rpx;
+  color: #00B26A;
+  padding: 4rpx 12rpx;
+  background: white;
+  border-radius: 12rpx;
+  margin-left: 8rpx;
+}
+
+.contact-action.call-action {
+  background: #E8F8F0;
+}
+
+/* 联系按钮 */
+.contact-btn {
+  background: linear-gradient(135deg, #00B26A 0%, #009958 100%);
+  color: white;
+  border: none;
+  border-radius: 40rpx;
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 178, 106, 0.3);
+}
+
+.contact-btn::after {
+  border: none;
+}
+
+.contact-icon {
+  font-size: 24rpx;
+}
+
+/* 密码提示 */
+.password-hint {
+  background: #FFF8E8;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.hint-icon {
+  font-size: 28rpx;
+}
+
+.hint-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #F5A623;
+}
+
+.copy-link {
+  color: #00B26A;
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  background: white;
+  border-radius: 20rpx;
+}
+
+/* 底部信息栏 */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.create-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.action-btn {
+  color: #00B26A;
+  font-size: 26rpx;
+  font-weight: 500;
+}

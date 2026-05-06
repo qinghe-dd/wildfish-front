@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "天气查询",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#00B26A",
+  "enablePullDownRefresh": true
+}

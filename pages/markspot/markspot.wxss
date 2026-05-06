@@ -1,0 +1,355 @@
+.mark-spot-container {
+  padding: 10rpx 20rpx;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* 顶部导航栏 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 30rpx;
+}
+.back-btn {
+  font-size: 36rpx;
+}
+.title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.header-right {
+  font-size: 28rpx;
+  color: #666;
+}
+.split {
+  margin: 0 5rpx;
+  color: #ccc;
+}
+
+/* 滚动公告栏 */
+.announcement-bar {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  padding: 20rpx 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.announcement-icon {
+  font-size: 36rpx;
+  margin-right: 15rpx;
+  flex-shrink: 0;
+}
+
+.announcement-text-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.announcement-text {
+  font-size: 26rpx;
+  color: #fff;
+  white-space: nowrap;
+  display: inline-block;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* 选择位置按钮 */
+.choose-location-btn {
+  width: 100%;
+  padding: 25rpx;
+  border: 2px solid #000;
+  border-radius: 8rpx;
+  background: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.location-desc {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 30rpx;
+  padding-left: 10rpx;
+}
+
+/* 表单区域 */
+.form-section {
+  margin-bottom: 40rpx;
+}
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: block;
+}
+.name-input {
+  width: 100%;
+  padding: 20rpx;
+  border: 1px solid #eee;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+}
+.upload-img-btn {
+  width: 100%;
+  padding: 20rpx;
+  border: 1px dashed #ccc;
+  border-radius: 8rpx;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #999;
+}
+.upload-img-btn image {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+.preview-img {
+  width: 120rpx;
+  height: 120rpx;
+  margin-top: 20rpx;
+}
+
+/* 标签组 */
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.tag {
+  padding: 15rpx 30rpx;
+  background: #f5f5f5;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+.tag.active {
+  background: #000;
+  color: #fff;
+}
+
+/* 鱼情描述 */
+.desc-textarea {
+  width: 100%;
+  padding: 20rpx;
+  border: 1px solid #eee;
+  border-radius: 8rpx;
+  min-height: 150rpx;
+  font-size: 28rpx;
+}
+
+/* 付费查看选项 */
+.paid-option {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.paid-label {
+  font-size: 28rpx;
+  margin-left: 10rpx;
+}
+
+.paid-tip {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 5rpx;
+  margin-left: 10rpx;
+}
+
+/* 收款码上传区域 */
+.payment-code-section {
+  margin-top: 30rpx;
+  padding: 30rpx;
+  background: #f9f9f9;
+  border-radius: 16rpx;
+  border: 2rpx dashed #ddd;
+}
+
+.payment-tip-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.payment-tip-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+
+.upload-payment-btn {
+  width: 100%;
+  padding: 25rpx;
+  border: 2rpx dashed #1890ff;
+  border-radius: 8rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #1890ff;
+}
+
+.upload-payment-btn image {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+
+.payment-code-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.payment-code-img {
+  width: 400rpx;
+  height: 400rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #eee;
+}
+
+.payment-reupload {
+  font-size: 26rpx;
+  color: #1890ff;
+  text-decoration: underline;
+  padding: 10rpx 20rpx;
+}
+
+/* 密码设置区域 */
+.password-setting-section {
+  padding: 30rpx;
+  background: #f0f9ff;
+  border-radius: 12rpx;
+  border: 2rpx dashed #1890ff;
+}
+
+.generate-password-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: #fff;
+  border: 2rpx solid #1890ff;
+  border-radius: 8rpx;
+  color: #1890ff;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.generate-password-btn::after {
+  border: none;
+}
+
+.password-field {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  text-align: center;
+  letter-spacing: 5rpx;
+  background: #fff;
+}
+
+.password-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  text-align: center;
+}
+
+/* 发布选项 */
+.publish-option {
+  margin-bottom: 40rpx;
+  font-size: 28rpx;
+}
+
+.publish-dynamic-option {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.publish-label {
+  font-size: 28rpx;
+}
+
+.privacy-group {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  background: #f9f9f9;
+  border-radius: 8rpx;
+}
+
+.privacy-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15rpx;
+  font-size: 26rpx;
+}
+
+.privacy-item text {
+  margin-left: 10rpx;
+}
+
+.privacy-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 发布按钮 */
+.publish-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: #000;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.publish-btn image {
+  width: 32rpx;
+  height: 32rpx;
+  margin-left: 10rpx;
+}
+
+/* 位置信息显示 */
+.location-info {
+  background: #f5f5f5;
+  padding: 20rpx;
+  border-radius: 10rpx;
+  margin: 20rpx 0;
+}
+.location-desc {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.4;
+}
+.location-coords {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+  display: block;
+}

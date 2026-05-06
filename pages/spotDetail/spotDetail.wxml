@@ -1,0 +1,431 @@
+<view class="spot-detail-container">
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <text class="back-btn" bindtap="goBack">←</text>
+    <text class="title">{{isEdit ? '编辑钓点' : '钓点详情'}}</text>
+    <view class="header-right">
+      <!-- 收藏按钮 -->
+      <text class="favorite-btn {{isFavorited ? 'favorited' : ''}}" bindtap="toggleFavorite" wx:if="{{!isEdit}}">
+        {{isFavorited ? '⭐ 已收藏' : '☆ 收藏'}}
+      </text>
+      <text class="edit-btn" bindtap="toggleEdit" wx:if="{{!isEdit}}">编辑</text>
+      <text class="save-btn" bindtap="saveEdit" wx:else>保存</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 详情内容 -->
+  <view class="detail-content" wx:if="{{!loading && spotDetail}}">
+    <!-- 滚动公告 -->
+    <view class="announcement-bar">
+      <text class="announcement-icon">📢</text>
+      <view class="announcement-text-wrapper">
+        <text class="announcement-text">请确保钓点真实有效，最近有过垂钓经历。多次标记假钓点将被禁止发布收费钓点或关小黑屋。</text>
+      </view>
+    </view>
+
+    <!-- 付费提示 - 显示在顶部，可关闭 -->
+    <view class="paid-banner" wx:if="{{spotDetail.is_paid_spot && !spotDetail.has_paid && !isEdit && !paidBannerClosed}}">
+      <view class="paid-banner-content">
+        <text class="paid-banner-icon">💰</text>
+        <text class="paid-banner-text">此钓点为付费内容，付款后可查看完整信息</text>
+        <text class="paid-banner-close" bindtap="closePaidBanner">×</text>
+      </view>
+      <button class="paid-banner-btn" bindtap="showPaymentModal">查看详情</button>
+    </view>
+
+    <!-- 钓点图片 -->
+    <view class="spot-image-wrapper">
+      <image
+        class="spot-image"
+        src="{{spotDetail.image || '/images/hero-images/fish.jpeg'}}"
+        mode="aspectFill"
+        lazy-load="{{true}}"
+        binderror="onImageError"
+        show-menu-by-longpress="{{true}}"
+      />
+    </view>
+
+    <!-- 钓点基本信息 -->
+    <view class="info-section">
+      <view class="spot-header">
+        <input
+          wx:if="{{isEdit}}"
+          class="edit-name-input"
+          value="{{editForm.name}}"
+          bindinput="onNameInput"
+          placeholder="请输入钓点名称"
+        />
+        <text class="spot-name" wx:else>{{spotDetail.name || '未知钓点'}}</text>
+        <view class="spot-type-tag">{{spotDetail.spot_type || '未分类'}}</view>
+        <!-- 举报警告标签 -->
+        <view class="report-warning-badge" wx:if="{{spotDetail.report_count > 0}}">
+          <text class="report-warning-icon">⚠️</text>
+          <text class="report-warning-text">该钓点已被{{spotDetail.report_count}}次举报</text>
+        </view>
+      </view>
+
+      <view class="spot-meta">
+        <view class="meta-item">
+          <text class="meta-label">水深：</text>
+          <picker
+            wx:if="{{isEdit}}"
+            class="edit-picker"
+            mode="selector"
+            range="{{waterDepthOptions}}"
+            value="{{waterDepthIndex}}"
+            bindchange="onWaterDepthChange"
+          >
+            <view class="picker-value">{{editForm.water_depth || '请选择'}}</view>
+          </picker>
+          <text class="meta-value" wx:else>{{spotDetail.water_depth || '未知'}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-label">地址：</text>
+          <text class="meta-value" wx:if="{{!spotDetail.is_paid_spot || spotDetail.has_paid || isEdit}}">{{spotDetail.address || '未知'}}</text>
+          <text class="meta-value blur-text" wx:else>付费后可查看地址信息</text>
+        </view>
+      </view>
+
+      <!-- 钓法标签 -->
+      <view class="fishing-methods" wx:if="{{spotDetail.fishing_methods && spotDetail.fishing_methods.length > 0}}">
+        <view class="method-tag" wx:for="{{spotDetail.fishing_methods}}" wx:key="index">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 钓点描述 -->
+    <view class="section">
+      <text class="section-title">钓点描述</text>
+      <textarea
+        wx:if="{{isEdit}}"
+        class="edit-textarea"
+        value="{{editForm.description}}"
+        bindinput="onDescriptionInput"
+        placeholder="请输入钓点描述"
+        maxlength="500"
+      />
+      <text class="section-content" wx:else>{{spotDetail.description || '暂无描述'}}</text>
+    </view>
+
+    <!-- 位置信息 -->
+    <view class="section">
+      <text class="section-title">位置信息</text>
+      <view class="location-info" wx:if="{{!spotDetail.is_paid_spot || spotDetail.has_paid || isEdit}}">
+        <text class="location-text">经度：{{spotDetail.longitude || '未知'}}</text>
+        <text class="location-text">纬度：{{spotDetail.latitude || '未知'}}</text>
+      </view>
+      <view class="blur-content" wx:else>
+        <text class="blur-text">付费后可查看精确位置信息</text>
+      </view>
+      <button class="nav-btn" bindtap="navigateToSpot" wx:if="{{(spotDetail.longitude && spotDetail.latitude) && (!spotDetail.is_paid_spot || spotDetail.has_paid)}}">
+        <text>📍 导航到此钓点</text>
+      </button>
+    </view>
+
+    <!-- 创建时间 -->
+    <view class="section">
+      <text class="section-title">创建时间</text>
+      <text class="section-content">{{spotDetail.created_at || '未知'}}</text>
+    </view>
+
+    <!-- 评价区域（对所有用户可见） -->
+    <view class="reviews-section" wx:if="{{spotDetail}}">
+      <view class="reviews-header">
+        <text class="reviews-title">用户评价 ({{reviews.length}})</text>
+        <!-- 只有已支付的用户才能评价 -->
+        <button class="write-review-btn"
+                bindtap="showReviewModal"
+                wx:if="{{!isEdit && (spotDetail.has_paid || !spotDetail.is_paid_spot)}}">
+          ✎ 写评价
+        </button>
+      </view>
+
+      <!-- 评价列表 -->
+      <view class="reviews-list" wx:if="{{reviews.length > 0}}">
+        <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+          <view class="review-header">
+            <text class="reviewer-nickname">{{item.user_nickname || '匿名用户'}}</text>
+            <view class="review-rating">
+              <text class="star" wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="star">
+                {{star <= item.rating ? '★' : '☆'}}
+              </text>
+            </view>
+          </view>
+          <text class="review-comment">{{item.comment || ''}}</text>
+          <view class="review-images" wx:if="{{item.images && item.images.length > 0}}">
+            <image class="review-image" wx:for="{{item.images}}" wx:for-item="img" wx:key="*this"
+                   src="{{img}}" mode="aspectFill" bindtap="previewImage" data-url="{{img}}"
+                   data-urls="{{item.images}}" />
+          </view>
+          <text class="review-time">{{item.created_at}}</text>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="reviews-empty" wx:elif="{{reviewsLoading}}">
+        <text>加载中...</text>
+      </view>
+      <view class="reviews-empty" wx:else>
+        <text>暂无评价，快来抢沙发吧~</text>
+      </view>
+    </view>
+
+    <!-- 编辑模式下的取消按钮 -->
+    <view class="edit-actions" wx:if="{{isEdit}}">
+      <button class="cancel-btn" bindtap="cancelEdit">取消</button>
+    </view>
+  </view>
+
+  <!-- 密码输入弹窗 -->
+  <view class="password-input-modal" wx:if="{{showPasswordInput}}" catchtouchmove="preventScroll">
+    <view class="password-modal-mask" bindtap="hidePasswordInputModal"></view>
+    <view class="password-modal-content">
+      <view class="password-modal-header">
+        <text class="password-modal-title">输入查看密码</text>
+        <text class="password-modal-close" bindtap="hidePasswordInputModal">×</text>
+      </view>
+      <view class="password-modal-body">
+        <text class="password-modal-desc">请输入6位数查看密码</text>
+        <input
+          class="password-input-field"
+          type="number"
+          maxlength="6"
+          placeholder="请输入6位数字密码"
+          value="{{inputPassword}}"
+          bindinput="onPasswordInputChange"
+        />
+      </view>
+      <view class="password-modal-footer">
+        <button class="password-cancel-btn" bindtap="hidePasswordInputModal">取消</button>
+        <button class="password-confirm-btn" bindtap="verifyPasswordAndUnlock">确认</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 付费详情弹窗 -->
+  <view class="payment-modal" wx:if="{{showPaymentModal}}" catchtouchmove="preventScroll">
+    <view class="payment-modal-mask" bindtap="hidePaymentModal"></view>
+    <view class="payment-modal-content">
+      <view class="payment-modal-header">
+        <text class="payment-modal-title">付费钓点</text>
+        <text class="payment-modal-close" bindtap="hidePaymentModal">×</text>
+      </view>
+      <view class="payment-modal-body">
+        <text class="payment-modal-desc">
+          <text wx:if="{{!spotDetail.has_password}}">此钓点为付费内容，请扫描下方收款码向钓点发布者支付后查看</text>
+          <text wx:else>此钓点为付费内容，请扫描下方收款码向钓点发布者支付，付款后向发布者索取6位数查看密码</text>
+        </text>
+
+        <!-- 收款码显示区域 -->
+        <view class="payment-code-display" wx:if="{{spotDetail.payment_qr_code_url}}">
+          <!-- 钓点名称提示 -->
+          <view class="spot-name-reminder">
+            <text class="reminder-icon">🎣</text>
+            <text class="reminder-text">钓点：{{spotDetail.name || '未命名钓点'}}</text>
+          </view>
+
+          <image
+            class="payment-code-image"
+            src="{{spotDetail.payment_qr_code_url}}"
+            mode="aspectFit"
+            show-menu-by-longpress="{{true}}"
+          />
+          <text class="payment-hint">长按图片可保存收款码</text>
+
+          <!-- 付费后获取密码的方式 -->
+          <view class="password-methods" wx:if="{{spotDetail.has_password}}">
+            <view class="password-methods-title">付款后获取查看密码的步骤：</view>
+
+            <!-- 方式1：复制发布者ID -->
+            <view class="password-method-item" bindtap="copyPublisherId">
+              <text class="method-icon">📋</text>
+              <view class="method-content">
+                <text class="method-text">复制发布者ID并添加好友</text>
+                <text class="method-desc">ID: {{spotDetail.owner_id || '未知'}}</text>
+              </view>
+            </view>
+
+            <!-- 方式2：联系发布者 -->
+            <view class="password-method-item" bindtap="contactPublisher">
+              <text class="method-icon">💬</text>
+              <view class="method-content">
+                <text class="method-text">联系发布者 "{{spotDetail.owner_nickname || '钓友'}}"</text>
+                <text class="method-desc">付款后向其索取6位数查看密码</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="payment-features" wx:if="{{!spotDetail.payment_qr_code_url}}">
+          <view class="feature-item">
+            <text class="feature-icon">✓</text>
+            <text class="feature-text">查看钓点详细描述</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">✓</text>
+            <text class="feature-text">获取精确位置信息</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">✓</text>
+            <text class="feature-text">支持一键导航</text>
+          </view>
+        </view>
+      </view>
+      <view class="payment-modal-footer">
+        <button class="payment-modal-close-btn" bindtap="hidePaymentModal">关闭</button>
+        <button class="payment-modal-confirm-btn" bindtap="showPasswordInputModal">输入密码</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评价提交弹窗 -->
+  <view class="review-modal" wx:if="{{showReviewModal}}">
+    <view class="review-modal-mask" bindtap="hideReviewModal"></view>
+    <view class="review-modal-content">
+      <view class="review-modal-header">
+        <text class="review-modal-title">写评价</text>
+        <text class="review-modal-close" bindtap="hideReviewModal">×</text>
+      </view>
+      <view class="review-modal-body">
+        <!-- 评分选择 -->
+        <view class="rating-section">
+          <text class="rating-label">评分：</text>
+          <view class="rating-stars">
+            <text class="star-item {{item <= reviewForm.rating ? 'active' : ''}}"
+                  wx:for="{{[1,2,3,4,5]}}"
+                  wx:key="*this"
+                  bindtap="selectRating"
+                  data-rating="{{item}}">
+              {{item <= reviewForm.rating ? '★' : '☆'}}
+            </text>
+          </view>
+        </view>
+
+        <!-- 评价内容 -->
+        <view class="comment-section">
+          <textarea class="review-textarea"
+                    placeholder="分享你的钓鱼体验吧..."
+                    value="{{reviewForm.comment}}"
+                    bindinput="onCommentInput"
+                    maxlength="500" />
+          <text class="char-count">{{reviewForm.comment.length}}/500</text>
+        </view>
+
+        <!-- 上传图片 -->
+        <view class="review-images-section">
+          <text class="section-label">添加图片（可选，最多9张）</text>
+          <view class="review-images-preview">
+            <view class="preview-item" wx:for="{{reviewForm.images}}" wx:key="*this">
+              <image class="preview-thumb"
+                     src="{{item}}"
+                     mode="aspectFill"
+                     bindtap="previewImage"
+                     data-url="{{item}}"
+                     data-urls="{{reviewForm.images}}" />
+              <text class="delete-image-btn" bindtap="deleteReviewImage" data-index="{{index}}">×</text>
+            </view>
+            <button class="add-image-btn"
+                    bindtap="chooseReviewImage"
+                    wx:if="{{reviewForm.images.length < 9}}">
+              <text>+</text>
+            </button>
+          </view>
+        </view>
+      </view>
+      <view class="review-modal-footer">
+        <button class="review-cancel-btn" bindtap="hideReviewModal">取消</button>
+        <button class="review-submit-btn" bindtap="submitReview">提交评价</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error-state" wx:if="{{!loading && error}}">
+    <text class="error-text">{{error}}</text>
+    <button class="retry-btn" bindtap="loadSpotDetail">重新加载</button>
+  </view>
+
+  <!-- 举报按钮 -->
+  <view class="report-btn-wrapper">
+    <button class="report-btn" bindtap="showReportModal">
+      <text class="report-icon">⚠️</text>
+      <text>举报钓点</text>
+    </button>
+  </view>
+
+  <!-- 举报弹窗 -->
+  <view class="modal-mask" wx:if="{{showReportModal}}" bindtap="hideReportModal">
+    <view class="report-modal-content" catchtap="preventScroll">
+      <view class="modal-header">
+        <text class="modal-title">举报钓点</text>
+        <text class="modal-close" bindtap="hideReportModal">×</text>
+      </view>
+
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="form-label">举报类型</text>
+          <radio-group class="radio-group" bindchange="onReportTypeChange">
+            <label class="radio-item">
+              <radio value="electrician" checked="{{reportType === 'electrician'}}" />
+              <text>🔌 检测电工</text>
+            </label>
+            <label class="radio-item">
+              <radio value="fake" checked="{{reportType === 'fake'}}" />
+              <text>❌ 假钓点</text>
+            </label>
+            <label class="radio-item">
+              <radio value="other" checked="{{reportType === 'other'}}" />
+              <text>📝 其他问题</text>
+            </label>
+          </radio-group>
+        </view>
+
+        <view class="form-item" wx:if="{{reportType === 'electrician'}}">
+          <text class="form-label">说明</text>
+          <text class="form-hint electrician-hint">
+            ⚡ 此功能仅用于检测可疑电工账号
+            ⚡ 系统会统计在多个被举报钓点都付费过的用户
+            ⚡ 分析结果推送给管理员人工核实后封禁
+          </text>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">详细描述</text>
+          <textarea
+            class="form-textarea"
+            placeholder="请详细描述您发现的问题..."
+            value="{{reportDescription}}"
+            bindinput="onReportDescriptionInput"
+            maxlength="50"
+          />
+          <text class="char-count">{{reportDescription.length}}/50</text>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label required">上传证据</text>
+          <text class="form-hint">必须上传至少1张图片作为举报证明</text>
+          <button class="upload-evidence-btn" bindtap="chooseEvidenceImages" wx:if="{{reportEvidenceImages.length < 3}}">
+            <text>+ 添加图片证据 ({{reportEvidenceImages.length}}/3)</text>
+          </button>
+          <view class="evidence-preview" wx:if="{{reportEvidenceImages.length > 0}}">
+            <view class="evidence-item" wx:for="{{reportEvidenceImages}}" wx:key="*this">
+              <image class="evidence-img" src="{{item}}" mode="aspectFill" bindtap="previewEvidence" data-url="{{item}}" />
+              <text class="evidence-remove" catchtap="removeEvidence" data-index="{{index}}">×</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hideReportModal">取消</button>
+        <button class="modal-btn confirm" bindtap="submitReport">提交举报</button>
+      </view>
+    </view>
+  </view>
+</view>

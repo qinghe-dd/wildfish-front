@@ -1,0 +1,302 @@
+/* pages/posts-list/posts-list.wxss */
+.posts-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+/* 加载和空状态 */
+.loading, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 40rpx;
+  background: #fff;
+  margin: 20rpx 30rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 动态列表 */
+.posts-list {
+  padding: 20rpx 0;
+}
+
+.post-item {
+  background: #fff;
+  margin: 0 30rpx 20rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+}
+
+/* 用户信息 */
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.user-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  margin-right: 20rpx;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.user-nickname {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.post-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 动态内容 */
+.post-content {
+  margin-bottom: 20rpx;
+}
+
+.content-text {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 动态图片 */
+.post-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.post-image.single {
+  width: 400rpx;
+  height: 400rpx;
+  border-radius: 10rpx;
+}
+
+.post-image.multiple {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 10rpx;
+}
+
+/* 位置和钓点 */
+.post-location,
+.post-spot {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 15rpx;
+  padding: 15rpx;
+  background: #f5f5f5;
+  border-radius: 10rpx;
+}
+
+.location-icon,
+.spot-icon {
+  font-size: 28rpx;
+  line-height: 28rpx;
+}
+
+.location-text,
+.spot-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 底部操作栏 */
+.post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 8rpx;
+  transition: background-color 0.2s;
+}
+
+.footer-item:active {
+  background-color: #f5f5f5;
+}
+
+.footer-icon {
+  font-size: 40rpx;
+  line-height: 40rpx;
+}
+
+.footer-text {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 加载更多 */
+.load-more,
+.no-more {
+  padding: 40rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+}
+
+.load-more:active {
+  opacity: 0.7;
+}
+
+/* 浮动发布按钮 */
+.floating-publish-btn {
+  position: fixed;
+  bottom: 100rpx;
+  right: 40rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  box-shadow: 0 4rpx 20rpx rgba(102, 126, 234, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.publish-icon {
+  font-size: 50rpx;
+  line-height: 50rpx;
+}
+
+/* 评论弹窗 */
+.comment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+}
+
+.comment-modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.comment-modal-content {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 20rpx 20rpx 0 0;
+  padding: 30rpx;
+  z-index: 1;
+}
+
+.comment-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.comment-modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.comment-modal-close {
+  font-size: 48rpx;
+  color: #999;
+  line-height: 1;
+}
+
+.comment-modal-body {
+  margin-bottom: 30rpx;
+}
+
+.comment-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 20rpx;
+  background: #f5f5f5;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+.comment-modal-footer {
+  display: flex;
+  gap: 20rpx;
+}
+
+.comment-cancel-btn,
+.comment-submit-btn {
+  flex: 1;
+  padding: 25rpx;
+  border-radius: 10rpx;
+  font-size: 30rpx;
+}
+
+.comment-cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.comment-submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.comment-cancel-btn::after,
+.comment-submit-btn::after {
+  border: none;
+}

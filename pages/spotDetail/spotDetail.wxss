@@ -1,0 +1,1401 @@
+.spot-detail-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* 顶部导航栏 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.back-btn {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.header-right {
+  font-size: 28rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+/* 收藏按钮 */
+.favorite-btn {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.favorite-btn.favorited {
+  color: #ffa500;
+}
+
+/* 发布动态按钮 */
+.publish-post-btn {
+  font-size: 28rpx;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.split {
+  margin: 0 5rpx;
+  color: #ccc;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 详情内容 */
+.detail-content {
+  padding-bottom: 40rpx;
+}
+
+/* 滚动公告栏 */
+.announcement-bar {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  padding: 20rpx 30rpx;
+  overflow: hidden;
+}
+
+.announcement-icon {
+  font-size: 36rpx;
+  margin-right: 15rpx;
+  flex-shrink: 0;
+}
+
+.announcement-text-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.announcement-text {
+  font-size: 26rpx;
+  color: #fff;
+  white-space: nowrap;
+  display: inline-block;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* 钓点图片 */
+.spot-image-wrapper {
+  width: 100%;
+  height: 400rpx;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.spot-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 信息区块 */
+.info-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.spot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.spot-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.spot-type-tag {
+  padding: 8rpx 20rpx;
+  background: #00B26A;
+  color: #fff;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+/* 举报警告标签 */
+.report-warning-badge {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 20rpx;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+  color: #fff;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  margin-left: 10rpx;
+}
+
+.report-warning-icon {
+  font-size: 26rpx;
+}
+
+.report-warning-text {
+  font-size: 24rpx;
+}
+
+.spot-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+}
+
+.meta-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.meta-value {
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 钓法标签 */
+.fishing-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+  margin-top: 20rpx;
+}
+
+.method-tag {
+  padding: 10rpx 25rpx;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+}
+
+/* 通用区块 */
+.section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.section-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 位置信息 */
+.location-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.location-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.nav-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: #00B26A;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 错误状态 */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+}
+
+.error-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.retry-btn {
+  padding: 20rpx 60rpx;
+  background: #00B26A;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+}
+
+/* 编辑按钮 */
+.edit-btn, .save-btn {
+  font-size: 28rpx;
+  color: #00B26A;
+  font-weight: bold;
+}
+
+/* 编辑表单样式 */
+.edit-name-input {
+  flex: 1;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  padding: 10rpx 15rpx;
+  margin-right: 10rpx;
+}
+
+.edit-picker {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  padding: 10rpx 15rpx;
+}
+
+.picker-value {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 20rpx;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* 编辑操作按钮 */
+.edit-actions {
+  padding: 20rpx 30rpx;
+  margin-bottom: 40rpx;
+}
+
+.cancel-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+}
+
+/* 付费提示横幅 */
+.paid-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20rpx 30rpx;
+  position: relative;
+  z-index: 100;
+}
+
+.paid-banner-content {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.paid-banner-icon {
+  font-size: 32rpx;
+  margin-right: 15rpx;
+}
+
+.paid-banner-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #fff;
+}
+
+.paid-banner-close {
+  font-size: 40rpx;
+  color: #fff;
+  padding: 0 10rpx;
+  margin-left: 10rpx;
+}
+
+.paid-banner-btn {
+  width: 100%;
+  padding: 20rpx;
+  background: #fff;
+  color: #667eea;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.paid-banner-btn::after {
+  border: none;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.popup-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.popup-close {
+  font-size: 48rpx;
+  color: #999;
+  padding: 0 10rpx;
+}
+
+.popup-content {
+  margin-bottom: 40rpx;
+}
+
+.popup-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.popup-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+}
+
+.feature-icon {
+  width: 40rpx;
+  height: 40rpx;
+  background: #00B26A;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  margin-right: 15rpx;
+  flex-shrink: 0;
+}
+
+.feature-text {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+/* 收款码显示区域 */
+.payment-code-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30rpx 0;
+}
+
+/* 钓点名称提示 */
+.spot-name-reminder {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 15rpx 30rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.reminder-icon {
+  font-size: 32rpx;
+  line-height: 32rpx;
+}
+
+.reminder-text {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.payment-code-image {
+  width: 500rpx;
+  height: 500rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #eee;
+  background: #fff;
+}
+
+.payment-hint {
+  display: block;
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.confirm-btn {
+  width: 100%;
+  padding: 30rpx;
+  background: #1890ff;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.confirm-btn::after {
+  border: none;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 30rpx;
+  background: #ff6b35;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.pay-btn::after {
+  border: none;
+}
+
+/* 模糊内容提示 */
+.blur-content {
+  padding: 40rpx 20rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+.blur-text {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 密码提示 */
+.password-hint {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  background: #fff3cd;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+.password-text {
+  font-size: 26rpx;
+  color: #856404;
+  font-weight: bold;
+}
+
+/* 获取密码的方式 */
+.password-methods {
+  margin-top: 30rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+}
+
+.password-methods-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.password-method-item {
+  display: flex;
+  align-items: center;
+  padding: 25rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 15rpx;
+  border: 1rpx solid #e0e0e0;
+}
+
+.method-icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.method-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.method-text {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.method-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 5rpx;
+}
+
+/* 付费弹窗 */
+.payment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.payment-modal-content {
+  position: relative;
+  width: 85%;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  z-index: 1501;
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.payment-modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.payment-modal-close {
+  font-size: 48rpx;
+  color: #999;
+  padding: 0 10rpx;
+}
+
+.payment-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 30rpx;
+}
+
+.payment-modal-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.payment-modal-footer {
+  display: flex;
+  gap: 20rpx;
+}
+
+.payment-modal-close-btn {
+  flex: 1;
+  padding: 25rpx;
+  background: #f5f5f5;
+  color: #666;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.payment-modal-close-btn::after {
+  border: none;
+}
+
+.payment-modal-confirm-btn {
+  flex: 1;
+  padding: 25rpx;
+  background: #1890ff;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.payment-modal-confirm-btn::after {
+  border: none;
+}
+
+/* 密码输入弹窗 */
+.password-input-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.password-modal-content {
+  position: relative;
+  width: 85%;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  z-index: 2001;
+}
+
+.password-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.password-modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.password-modal-close {
+  font-size: 48rpx;
+  color: #999;
+  padding: 0 10rpx;
+}
+
+.password-modal-body {
+  margin-bottom: 40rpx;
+}
+
+.password-modal-desc {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 30rpx;
+}
+
+.password-input-field {
+  width: 100%;
+  padding: 25rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  text-align: center;
+  letter-spacing: 10rpx;
+  box-sizing: border-box;
+}
+
+.password-modal-footer {
+  display: flex;
+  gap: 20rpx;
+}
+
+.password-cancel-btn {
+  flex: 1;
+  padding: 25rpx;
+  background: #f5f5f5;
+  color: #666;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.password-cancel-btn::after {
+  border: none;
+}
+
+.password-confirm-btn {
+  flex: 1;
+  padding: 25rpx;
+  background: #1890ff;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.password-confirm-btn::after {
+  border: none;
+}
+
+/* ============ 评价相关样式 ============ */
+
+/* 评价区域 */
+.reviews-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.reviews-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.reviews-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.write-review-btn {
+  padding: 15rpx 30rpx;
+  background: #00B26A;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  border: none;
+}
+
+.write-review-btn::after {
+  border: none;
+}
+
+/* 评价列表 */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.review-item {
+  padding: 25rpx;
+  background: #f9f9f9;
+  border-radius: 12rpx;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15rpx;
+}
+
+.reviewer-nickname {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.review-rating {
+  display: flex;
+  gap: 5rpx;
+}
+
+.star {
+  font-size: 28rpx;
+  color: #FFD700;
+}
+
+/* 评价内容 */
+.review-comment {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15rpx;
+}
+
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: 15rpx;
+}
+
+.review-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+}
+
+.review-time {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.reviews-empty {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 26rpx;
+}
+
+/* 评价弹窗 */
+.review-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.review-modal-content {
+  position: relative;
+  width: 90%;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  z-index: 3001;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.review-modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.review-modal-close {
+  font-size: 48rpx;
+  color: #999;
+  padding: 0 10rpx;
+}
+
+.review-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 30rpx;
+}
+
+/* 评分选择 */
+.rating-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx 0;
+}
+
+.rating-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 10rpx;
+}
+
+.star-item {
+  font-size: 48rpx;
+  color: #ddd;
+  transition: color 0.3s;
+}
+
+.star-item.active {
+  color: #FFD700;
+}
+
+/* 评价内容输入 */
+.comment-section {
+  margin-bottom: 30rpx;
+}
+
+.review-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 20rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+/* 评价图片上传 */
+.review-images-section {
+  margin-bottom: 30rpx;
+}
+
+.section-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.review-images-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.preview-item {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.preview-thumb {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #eee;
+}
+
+.delete-image-btn {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  line-height: 40rpx;
+  text-align: center;
+  z-index: 10;
+}
+
+.add-image-btn {
+  width: 160rpx;
+  height: 160rpx;
+  border: 2rpx dashed #ddd;
+  border-radius: 8rpx;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  color: #999;
+  padding: 0;
+}
+
+.add-image-btn::after {
+  border: none;
+}
+
+/* 评价弹窗底部按钮 */
+.review-modal-footer {
+  display: flex;
+  gap: 20rpx;
+}
+
+.review-cancel-btn {
+  flex: 1;
+  padding: 25rpx;
+  background: #f5f5f5;
+  color: #666;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.review-cancel-btn::after {
+  border: none;
+}
+
+.review-submit-btn {
+  flex: 1;
+  padding: 25rpx;
+  background: #00B26A;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.review-submit-btn::after {
+  border: none;
+}
+
+/* 举报按钮 */
+.report-btn-wrapper {
+  position: fixed;
+  bottom: 120rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+.report-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  padding: 20rpx 60rpx;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+  color: #fff;
+  font-size: 30rpx;
+  border-radius: 50rpx;
+  box-shadow: 0 4rpx 20rpx rgba(255, 107, 107, 0.4);
+  border: none;
+}
+
+.report-btn::after {
+  border: none;
+}
+
+.report-icon {
+  font-size: 32rpx;
+}
+
+/* 举报弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 30rpx;
+}
+
+.modal-content {
+  width: 85%;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.2);
+}
+
+.report-modal-content {
+  width: 85%;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.modal-close {
+  font-size: 48rpx;
+  color: #fff;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.modal-body {
+  padding: 30rpx;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 15rpx;
+}
+
+.form-label.required::before {
+  content: '*';
+  color: #ff6b6b;
+  margin-right: 5rpx;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  border: 2rpx solid #e9ecef;
+  transition: all 0.3s;
+}
+
+.radio-item:active {
+  background: #e9ecef;
+}
+
+.radio-item radio {
+  transform: scale(1.2);
+}
+
+.radio-item text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.form-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #ff6b6b;
+  line-height: 1.6;
+  padding: 15rpx;
+  background: #fff5f5;
+  border-radius: 8rpx;
+  margin-top: 10rpx;
+}
+
+.electrician-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #d63384;
+  line-height: 2;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+  padding: 20rpx;
+  border-radius: 12rpx;
+  border-left: 6rpx solid #ff6b6b;
+  font-weight: 500;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 150rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.upload-evidence-btn {
+  width: 100%;
+  padding: 25rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 28rpx;
+  border-radius: 12rpx;
+  border: none;
+  font-weight: 500;
+}
+
+.upload-evidence-btn::after {
+  border: none;
+}
+
+.upload-evidence-btn:active {
+  opacity: 0.9;
+}
+
+.evidence-preview {
+  display: flex;
+  gap: 15rpx;
+  margin-top: 20rpx;
+  flex-wrap: wrap;
+}
+
+.evidence-item {
+  position: relative;
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.evidence-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12rpx;
+}
+
+.evidence-remove {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 44rpx;
+  height: 44rpx;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.modal-footer {
+  display: flex;
+  border-top: 1rpx solid #eee;
+  padding: 0;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 30rpx;
+  font-size: 30rpx;
+  border: none;
+  border-radius: 0;
+  font-weight: 500;
+}
+
+.modal-btn::after {
+  border: none;
+}
+
+.modal-btn.cancel {
+  background: #fff;
+  color: #666;
+}
+
+.modal-btn.confirm {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}

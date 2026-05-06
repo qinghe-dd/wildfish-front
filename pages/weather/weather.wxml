@@ -1,0 +1,150 @@
+<view class="weather-container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error-state" wx:if="{{!loading && error}}">
+    <text class="error-text">{{error}}</text>
+    <button class="retry-btn" bindtap="loadWeather">重新加载</button>
+  </view>
+
+  <!-- 天气内容 -->
+  <view class="weather-content" wx:if="{{!loading && !error && currentWeather}}">
+    <!-- 城市信息 -->
+    <view class="city-header">
+      <text class="city-name">{{cityName}}</text>
+      <view class="header-actions">
+        <text class="update-time">{{updateTime}}</text>
+        <text class="search-btn" bindtap="showSearchModal">🔍 搜索城市</text>
+      </view>
+    </view>
+
+    <!-- 当前天气卡片 -->
+    <view class="current-weather-card">
+      <view class="temp-section">
+        <text class="current-temp">{{currentWeather.temp}}°</text>
+        <text class="feels-temp">体感 {{currentWeather.feelsLike}}°</text>
+      </view>
+      <view class="weather-info">
+        <text class="weather-text">{{currentWeather.text}}</text>
+        <text class="weather-icon">{{currentWeather.icon}}</text>
+      </view>
+      <view class="weather-details">
+        <view class="detail-item">
+          <text class="detail-label">风力</text>
+          <text class="detail-value">{{currentWeather.windDir}} {{currentWeather.windScale}}级</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">湿度</text>
+          <text class="detail-value">{{currentWeather.humidity}}%</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">气压</text>
+          <text class="detail-value">{{currentWeather.pressure}}hPa</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">能见度</text>
+          <text class="detail-value">{{currentWeather.vis}}km</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 钓鱼指数卡片 -->
+    <view class="fishing-index-card" wx:if="{{fishingIndex}}">
+      <view class="index-header">
+        <text class="index-title">🎣 钓鱼指数</text>
+        <text class="index-category">{{fishingIndex.category}}</text>
+      </view>
+      <text class="index-text">{{fishingIndex.text}}</text>
+    </view>
+
+    <!-- 其他生活指数 -->
+    <view class="other-indices" wx:if="{{otherIndices.length > 0}}">
+      <view class="index-item" wx:for="{{otherIndices}}" wx:key="type">
+        <text class="index-name">{{item.name}}</text>
+        <text class="index-category-text">{{item.category}}</text>
+      </view>
+    </view>
+
+    <!-- 3天天气预报 -->
+    <view class="forecast-section" wx:if="{{forecast.length > 0}}">
+      <text class="section-title">未来3天预报</text>
+      <view class="forecast-list">
+        <view class="forecast-item" wx:for="{{forecast}}" wx:key="fxDate">
+          <text class="forecast-date">{{item.dateText}}</text>
+          <text class="forecast-icon">{{item.icon}}</text>
+          <view class="forecast-temp">
+            <text class="temp-high">{{item.tempMax}}°</text>
+            <text class="temp-low">{{item.tempMin}}°</text>
+          </view>
+          <text class="forecast-text">{{item.textDay}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 城市搜索弹窗 -->
+  <view class="search-modal" wx:if="{{showSearch}}">
+    <view class="search-modal-mask" bindtap="hideSearchModal"></view>
+    <view class="search-modal-content">
+      <view class="search-modal-header">
+        <text class="search-modal-title">搜索城市</text>
+        <text class="search-modal-close" bindtap="hideSearchModal">×</text>
+      </view>
+
+      <!-- 搜索输入框 -->
+      <view class="search-input-wrapper">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="请输入城市名称（如：北京、上海、合肥）"
+          value="{{searchKeyword}}"
+          bindinput="onSearchInput"
+          bindconfirm="searchCity"
+          confirm-type="search"
+        />
+        <text class="search-submit-btn" bindtap="searchCity">搜索</text>
+      </view>
+
+      <!-- 搜索结果列表 -->
+      <view class="search-results" wx:if="{{searchResults.length > 0}}">
+        <text class="search-results-title">搜索结果</text>
+        <scroll-view class="search-results-list" scroll-y>
+          <view
+            class="search-result-item"
+            wx:for="{{searchResults}}"
+            wx:key="id"
+            bindtap="selectCity"
+            data-city="{{item}}"
+          >
+            <view class="result-info">
+              <text class="result-name">{{item.name}}</text>
+              <text class="result-location">{{item.adm1}} {{item.adm2}}</text>
+            </view>
+            <text class="result-arrow">→</text>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 搜索中状态 -->
+      <view class="search-loading" wx:if="{{searching}}">
+        <text>搜索中...</text>
+      </view>
+
+      <!-- 热门城市 -->
+      <view class="hot-cities" wx:if="{{searchResults.length === 0 && !searching}}">
+        <text class="hot-cities-title">热门城市</text>
+        <view class="hot-cities-grid">
+          <text class="hot-city-item" bindtap="quickSelectCity" data-city="北京">北京</text>
+          <text class="hot-city-item" bindtap="quickSelectCity" data-city="上海">上海</text>
+          <text class="hot-city-item" bindtap="quickSelectCity" data-city="广州">广州</text>
+          <text class="hot-city-item" bindtap="quickSelectCity" data-city="深圳">深圳</text>
+          <text class="hot-city-item" bindtap="quickSelectCity" data-city="杭州">杭州</text>
+          <text class="hot-city-item" bindtap="quickSelectCity" data-city="成都">成都</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

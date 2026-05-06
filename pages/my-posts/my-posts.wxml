@@ -1,0 +1,56 @@
+<!--pages/my-posts/my-posts.wxml-->
+<view class="my-posts-container">
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && posts.length === 0}}">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">还没有发布过动态</text>
+    <!-- 发布动态按钮已隐藏（审核期间暂时关闭） -->
+    <!-- <button class="publish-btn" bindtap="goToPublish">发布动态</button> -->
+  </view>
+
+  <!-- 动态列表 -->
+  <view class="posts-list" wx:if="{{!loading && posts.length > 0}}">
+    <view class="post-item" wx:for="{{posts}}" wx:key="id" bindtap="goToPostDetail" data-id="{{item.id}}">
+      <!-- 动态内容 -->
+      <view class="post-content">
+        <text class="content-text">{{item.content}}</text>
+      </view>
+
+      <!-- 动态图片 -->
+      <view class="post-images" wx:if="{{item.images && item.images.length > 0}}">
+        <image
+          class="post-image {{item.images.length === 1 ? 'single' : 'multiple'}}"
+          wx:for="{{item.images}}"
+          wx:for-item="image"
+          wx:key="*this"
+          src="{{image}}"
+          mode="aspectFill"
+        ></image>
+      </view>
+
+      <!-- 动态信息 -->
+      <view class="post-meta">
+        <text class="post-time">{{item.created_at}}</text>
+        <view class="post-stats">
+          <text class="stat-item">❤️ {{item.like_count || 0}}</text>
+          <text class="stat-item">💬 {{item.comment_count || 0}}</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="post-actions">
+        <button class="action-btn delete-btn" catchtap="deletePost" data-id="{{item.id}}">删除</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 发布按钮已隐藏（审核期间暂时关闭） -->
+<!-- <view class="floating-publish-btn" bindtap="goToPublish" wx:if="{{!loading}}">
+  <text class="publish-icon">+</text>
+</view> -->

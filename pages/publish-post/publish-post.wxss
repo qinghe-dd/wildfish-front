@@ -1,0 +1,245 @@
+/* pages/publish-post/publish-post.wxss */
+.publish-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+/* 顶部导航 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.cancel-btn {
+  font-size: 30rpx;
+  color: #666;
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.publish-btn {
+  font-size: 30rpx;
+  color: #ccc;
+}
+
+.publish-btn.active {
+  color: #00B26A;
+}
+
+/* 内容输入区 */
+.content-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+
+.content-input {
+  width: 100%;
+  min-height: 200rpx;
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+}
+
+.char-count {
+  position: absolute;
+  bottom: 20rpx;
+  right: 30rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 图片上传区 */
+.images-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.images-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.image-item {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+}
+
+.delete-btn {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  line-height: 40rpx;
+  text-align: center;
+}
+
+.add-image-btn {
+  width: 200rpx;
+  height: 200rpx;
+  border: 2rpx dashed #ddd;
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+
+.add-icon {
+  font-size: 60rpx;
+  color: #999;
+  line-height: 60rpx;
+}
+
+.add-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 位置和钓点 */
+.location-section,
+.spot-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.location-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spot-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.spot-section .spot-left {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+}
+
+.location-left,
+.spot-left {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+}
+
+.location-icon,
+.spot-icon {
+  font-size: 36rpx;
+  line-height: 36rpx;
+}
+
+.location-text,
+.spot-text {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.arrow {
+  font-size: 40rpx;
+  color: #ccc;
+  line-height: 40rpx;
+}
+
+/* 已选择钓点信息 */
+.selected-spot-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  background: #f0f7ff;
+  border-radius: 10rpx;
+  border-left: 4rpx solid #667eea;
+}
+
+.selected-spot-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.remove-spot-btn {
+  padding: 8rpx 20rpx;
+  font-size: 26rpx;
+  color: #667eea;
+  background: #fff;
+  border-radius: 8rpx;
+  border: 1rpx solid #667eea;
+}
+
+.remove-spot-btn:active {
+  opacity: 0.7;
+}
+
+/* 选择器触发器 */
+.picker-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20rpx;
+  background: #f9f9f9;
+  border-radius: 10rpx;
+  border: 1rpx solid #e8e8e8;
+}
+
+.picker-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 无钓点提示 */
+.no-spots-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  background: #f9f9f9;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+.goto-mark-btn {
+  padding: 8rpx 20rpx;
+  font-size: 26rpx;
+  color: #00B26A;
+  background: #fff;
+  border-radius: 8rpx;
+  border: 1rpx solid #00B26A;
+}

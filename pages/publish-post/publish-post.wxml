@@ -1,0 +1,81 @@
+<!--pages/publish-post/publish-post.wxml-->
+<view class="publish-container">
+  <!-- 顶部导航 -->
+  <view class="header">
+    <text class="cancel-btn" bindtap="cancel">取消</text>
+    <text class="title">发布动态</text>
+    <text class="publish-btn {{canPublish ? 'active' : ''}}" bindtap="publish">发布</text>
+  </view>
+
+  <!-- 内容输入区 -->
+  <view class="content-section">
+    <textarea
+      class="content-input"
+      placeholder="分享你的钓鱼经历、收获、心得..."
+      maxlength="500"
+      auto-height
+      value="{{content}}"
+      bindinput="onContentInput"
+    ></textarea>
+    <text class="char-count">{{content.length}}/500</text>
+  </view>
+
+  <!-- 图片上传区 -->
+  <view class="images-section">
+    <view class="images-list">
+      <view class="image-item" wx:for="{{images}}" wx:key="index">
+        <image class="image" src="{{item}}" mode="aspectFill"></image>
+        <text class="delete-btn" bindtap="deleteImage" data-index="{{index}}">×</text>
+      </view>
+      <view class="add-image-btn" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 位置信息 -->
+  <view class="location-section" bindtap="chooseLocation">
+    <view class="location-left">
+      <text class="location-icon">📍</text>
+      <text class="location-text">{{locationName || '添加位置'}}</text>
+    </view>
+    <text class="arrow">→</text>
+  </view>
+
+  <!-- 关联钓点 -->
+  <view class="spot-section">
+    <view class="spot-left">
+      <text class="spot-icon">🎣</text>
+      <text class="spot-text">关联钓点</text>
+    </view>
+
+    <!-- 已选择钓点 -->
+    <view class="selected-spot-info" wx:if="{{spotId}}">
+      <text class="selected-spot-name">{{spotName}}</text>
+      <text class="remove-spot-btn" bindtap="removeSpot">移除</text>
+    </view>
+
+    <!-- 未选择钓点 - 显示下拉选择 -->
+    <view wx:else>
+      <picker
+        wx:if="{{mySpots.length > 0}}"
+        mode="selector"
+        range="{{mySpots}}"
+        range-key="name"
+        value="{{spotIndex}}"
+        bindchange="onSpotChange"
+      >
+        <view class="picker-trigger">
+          <text class="picker-text">{{spotIndex >= 0 ? mySpots[spotIndex].name : '选择钓点'}}</text>
+          <text class="arrow">▼</text>
+        </view>
+      </picker>
+
+      <view class="no-spots-hint" wx:else>
+        <text>您还没有发布钓点</text>
+        <navigator url="/pages/markspot/markspot" class="goto-mark-btn">去标记钓点</navigator>
+      </view>
+    </view>
+  </view>
+</view>

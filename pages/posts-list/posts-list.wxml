@@ -1,0 +1,115 @@
+<!--pages/posts-list/posts-list.wxml-->
+<view class="posts-container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && posts.length === 0}}">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">还没有动态</text>
+    <text class="empty-hint">快来发布第一条动态吧~</text>
+  </view>
+
+  <!-- 动态列表 -->
+  <view class="posts-list" wx:if="{{!loading && posts.length > 0}}">
+    <view class="post-item" wx:for="{{posts}}" wx:key="id" bindtap="goToPostDetail" data-id="{{item.id}}">
+      <!-- 用户信息 -->
+      <view class="post-header">
+        <image class="user-avatar" src="{{item.user_avatar || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
+        <view class="user-info">
+          <text class="user-nickname">{{item.user_nickname || '钓鱼达人'}}</text>
+          <text class="post-time">{{item.created_at}}</text>
+        </view>
+      </view>
+
+      <!-- 动态内容 -->
+      <view class="post-content">
+        <text class="content-text">{{item.content}}</text>
+      </view>
+
+      <!-- 动态图片 -->
+      <view class="post-images" wx:if="{{item.images && item.images.length > 0}}">
+        <image
+          class="post-image {{item.images.length === 1 ? 'single' : 'multiple'}}"
+          wx:for="{{item.images}}"
+          wx:for-item="image"
+          wx:key="*this"
+          src="{{image}}"
+          mode="aspectFill"
+          bindtap="previewImage"
+          data-url="{{image}}"
+          data-urls="{{item.images}}"
+        ></image>
+      </view>
+
+      <!-- 位置信息 -->
+      <view class="post-location" wx:if="{{item.location_name}}">
+        <text class="location-icon">📍</text>
+        <text class="location-text">{{item.location_name}}</text>
+      </view>
+
+      <!-- 关联钓点 -->
+      <view class="post-spot" wx:if="{{item.spot_id}}">
+        <text class="spot-icon">🎣</text>
+        <text class="spot-text">{{item.spot_name || '关联钓点'}}</text>
+      </view>
+
+      <!-- 底部操作栏 -->
+      <view class="post-footer" catchtap="stopPropagation">
+        <view class="footer-item" catchtap="toggleLike" data-id="{{item.id}}" data-liked="{{item.is_liked}}">
+          <text class="footer-icon">{{item.is_liked ? '❤️' : '🤍'}}</text>
+          <text class="footer-text">{{item.like_count || '点赞'}}</text>
+        </view>
+        <view class="footer-item" catchtap="goToPostDetail" data-id="{{item.id}}">
+          <text class="footer-icon">💬</text>
+          <text class="footer-text">{{item.comment_count || '评论'}}</text>
+        </view>
+        <view class="footer-item" catchtap="sharePost" data-id="{{item.id}}">
+          <text class="footer-icon">↗️</text>
+          <text class="footer-text">分享</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{hasMore}}" bindtap="loadMore">
+      <text>加载更多</text>
+    </view>
+    <view class="no-more" wx:else>
+      <text>没有更多了</text>
+    </view>
+  </view>
+
+  <!-- 浮动发布按钮 -->
+  <view class="floating-publish-btn" bindtap="goToPublish">
+    <text class="publish-icon">✏️</text>
+  </view>
+
+  <!-- 评论弹窗 -->
+  <view class="comment-modal" wx:if="{{showCommentModal}}" catchtouchmove="preventScroll">
+    <view class="comment-modal-mask" bindtap="hideCommentModal"></view>
+    <view class="comment-modal-content">
+      <view class="comment-modal-header">
+        <text class="comment-modal-title">发表评论</text>
+        <text class="comment-modal-close" bindtap="hideCommentModal">×</text>
+      </view>
+      <view class="comment-modal-body">
+        <textarea
+          class="comment-textarea"
+          placeholder="分享你的想法..."
+          value="{{commentContent}}"
+          bindinput="onCommentInput"
+          maxlength="500"
+          auto-height
+        />
+        <text class="char-count">{{commentContent.length}}/500</text>
+      </view>
+      <view class="comment-modal-footer">
+        <button class="comment-cancel-btn" bindtap="hideCommentModal">取消</button>
+        <button class="comment-submit-btn" bindtap="submitComment">发表</button>
+      </view>
+    </view>
+  </view>
+</view>
