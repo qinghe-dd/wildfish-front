@@ -125,3 +125,129 @@
   color: #ccc;
   line-height: 40rpx;
 }
+
+/* 编辑提示 */
+.edit-hint {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  align-self: center;
+}
+
+/* 资料编辑弹窗 */
+.profile-editor-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.profile-editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.profile-editor {
+  width: 600rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 50rpx 40rpx;
+}
+
+.profile-editor-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.profile-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.avatar-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: normal;
+}
+
+.avatar-btn::after {
+  border: none;
+}
+
+.profile-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 70rpx;
+  border: 4rpx solid #eee;
+}
+
+.avatar-hint {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.profile-nickname-section {
+  margin-bottom: 40rpx;
+}
+
+.profile-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.profile-nickname-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #eee;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  box-sizing: border-box;
+}
+
+.profile-editor-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 30rpx;
+}
+
+.profile-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+}
+
+.profile-btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.profile-btn-save {
+  background: #667eea;
+  color: #fff;
+}

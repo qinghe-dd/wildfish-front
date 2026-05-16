@@ -1,5 +1,6 @@
 // pages/spotDetail/spotDetail.js
 const apiConfig = require('../../config/api.js')
+const auth = require('../../utils/auth.js')
 
 Page({
   data: {
@@ -64,18 +65,13 @@ Page({
 
     this.setData({ loading: true, error: null })
 
-    // 获取或生成用户ID，并持久化存储
-    let userId = wx.getStorageSync('userId')
-    if (!userId) {
-      userId = 'user_' + Date.now()
-      wx.setStorageSync('userId', userId)
-      console.log('✅ 生成新用户ID并存储:', userId)
-    } else {
-      console.log('✅ 使用已存储的用户ID:', userId)
-    }
-
-    // 保存userId到data
+    // 直接从本地存储读取 userId，没有就用空字符串（只看公开信息）
+    const userId = auth.getUserId()
     this.setData({ userId })
+    this._doLoadSpotDetail(userId, callback)
+  },
+
+  _doLoadSpotDetail(userId, callback) {
 
     wx.request({
       url: apiConfig.BASE_URL + '/fishing-spots/' + this.data.spotId + '/?user_id=' + userId,
@@ -419,14 +415,11 @@ Page({
   verifyPasswordAndUnlock() {
     const { spotId, inputPassword } = this.data;
 
-    // 获取或生成用户ID，并持久化存储
-    let userId = wx.getStorageSync('userId')
+    // 使用 auth 工具获取用户ID
+    const userId = auth.getUserId()
+
     if (!userId) {
-      userId = 'user_' + Date.now()
-      wx.setStorageSync('userId', userId)
-      console.log('✅ 验证密码时生成新用户ID并存储:', userId)
-    } else {
-      console.log('✅ 验证密码时使用已存储的用户ID:', userId)
+      return wx.showToast({ title: "请先登录", icon: "none" });
     }
 
     if (!inputPassword || inputPassword.length !== 6) {
@@ -563,14 +556,9 @@ Page({
     console.log('打开前的reviewForm:', this.data.reviewForm)
 
     // 检查用户是否已登录
-    let userId = wx.getStorageSync('userId')
+    const userId = auth.getUserId()
     if (!userId) {
-      // 如果没有userId，生成一个
-      userId = 'user_' + Date.now()
-      wx.setStorageSync('userId', userId)
-      console.log('✅ 生成新用户ID:', userId)
-    } else {
-      console.log('✅ 已有用户ID:', userId)
+      return wx.showToast({ title: '请先登录', icon: 'none' })
     }
 
     // 先初始化数据，再显示弹窗
@@ -700,8 +688,15 @@ Page({
    */
   submitReview() {
     const { spotId, reviewForm } = this.data
-    const userId = wx.getStorageSync('userId')
+    const userId = auth.getUserId()
     const userNickname = wx.getStorageSync('userNickname') || '钓鱼达人'
+
+    if (!userId) {
+      return wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+    }
 
     // 验证评价内容
     if (!reviewForm.comment || reviewForm.comment.trim() === '') {
@@ -1018,7 +1013,7 @@ Page({
             wx.hideLoading()
             if (res.statusCode === 200) {
               // 先关闭弹窗
-              that.hideReportModal()
+              this.hideReportModal()
               // 然后显示成功提示
               setTimeout(() => {
                 wx.showToast({

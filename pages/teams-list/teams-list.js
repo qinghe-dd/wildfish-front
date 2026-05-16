@@ -1,5 +1,6 @@
 // pages/teams-list/teams-list.js
 const apiConfig = require('../../config/api.js')
+const auth = require('../../utils/auth.js')
 
 Page({
   data: {
@@ -12,7 +13,7 @@ Page({
 
   onLoad(options) {
     // 获取用户ID
-    const userId = wx.getStorageSync('userId')
+    const userId = auth.getUserId()
     this.setData({ userId })
 
     // 获取用户位置

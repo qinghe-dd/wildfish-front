@@ -1,5 +1,6 @@
 // pages/team-detail/team-detail.js
 const apiConfig = require('../../config/api.js')
+const auth = require('../../utils/auth.js')
 
 Page({
   data: {
@@ -29,7 +30,7 @@ Page({
       this.setData({ teamId: options.id })
 
       // 获取用户ID
-      const userId = wx.getStorageSync('userId')
+      const userId = auth.getUserId()
       this.setData({ userId })
 
       // 获取用户位置
@@ -249,7 +250,7 @@ Page({
    */
   joinTeam() {
     const { teamDetail, userId } = this.data
-    const userInfo = wx.getStorageSync('userInfo') || {}
+    const userInfo = auth.getUserInfo()
 
     wx.request({
       url: `${apiConfig.BASE_URL}/fishing-teams/join`,
@@ -313,7 +314,7 @@ Page({
    */
   confirmJoin() {
     const { teamDetail, userId, verifyCode } = this.data
-    const userInfo = wx.getStorageSync('userInfo') || {}
+    const userInfo = auth.getUserInfo()
 
     if (!verifyCode || verifyCode.length !== 6) {
       wx.showToast({
@@ -407,7 +408,7 @@ Page({
    */
   sendMessage() {
     const { inputMessage, teamId, userId } = this.data
-    const userInfo = wx.getStorageSync('userInfo') || {}
+    const userInfo = auth.getUserInfo()
 
     if (!inputMessage.trim()) {
       wx.showToast({
@@ -453,7 +454,7 @@ Page({
    */
   chooseImage() {
     const { teamId, userId } = this.data
-    const userInfo = wx.getStorageSync('userInfo') || {}
+    const userInfo = auth.getUserInfo()
 
     wx.chooseImage({
       count: 1,

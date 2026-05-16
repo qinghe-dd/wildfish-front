@@ -2,12 +2,13 @@
 <view class="mine-container">
   <!-- 用户信息卡片 -->
   <view class="user-card">
-    <view class="user-info">
+    <view class="user-info" bindtap="showProfileEditor">
       <image class="user-avatar" src="{{userInfo.avatarUrl || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
       <view class="user-detail">
         <text class="user-nickname">{{userInfo.nickName || '钓鱼人'}}</text>
         <text class="user-id">ID: {{userId || '未登录'}}</text>
       </view>
+      <text class="edit-hint">编辑</text>
     </view>
   </view>
 
@@ -64,6 +65,34 @@
         <text class="function-name">设置</text>
       </view>
       <text class="function-arrow">→</text>
+    </view>
+  </view>
+
+  <!-- 资料编辑弹窗 - 遮罩层与内容层分离，防止原生 input 点击穿透导致关闭 -->
+  <view class="profile-editor-mask" wx:if="{{showProfileEditor}}" bindtap="hideProfileEditor"></view>
+  <view class="profile-editor-overlay" wx:if="{{showProfileEditor}}" catchtap="preventBubble">
+    <view class="profile-editor">
+      <view class="profile-editor-title">编辑资料</view>
+
+      <!-- 头像选择 -->
+      <view class="profile-avatar-section">
+        <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image class="profile-avatar" src="{{userInfo.avatarUrl || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
+          <text class="avatar-hint">点击更换头像</text>
+        </button>
+      </view>
+
+      <!-- 昵称输入 -->
+      <view class="profile-nickname-section">
+        <text class="profile-label">昵称</text>
+        <input class="profile-nickname-input" type="nickname" value="{{editNickname}}" bindinput="onNicknameInput" bindblur="onNicknameConfirm" placeholder="请输入昵称" />
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="profile-editor-actions">
+        <view class="profile-btn profile-btn-cancel" bindtap="hideProfileEditor">取消</view>
+        <view class="profile-btn profile-btn-save" bindtap="saveProfile">保存</view>
+      </view>
     </view>
   </view>
 </view>

@@ -225,7 +225,20 @@ Page({
       success: (res) => {
         if (res.confirm) {
           try {
+            // 先保存登录信息
+            const savedUserId = wx.getStorageSync('userId')
+            const savedUserInfo = wx.getStorageSync('userInfo')
+
             wx.clearStorageSync()
+
+            // 恢复登录信息
+            if (savedUserId) {
+              wx.setStorageSync('userId', savedUserId)
+            }
+            if (savedUserInfo) {
+              wx.setStorageSync('userInfo', savedUserInfo)
+            }
+
             wx.showToast({
               title: '清理成功',
               icon: 'success'

@@ -1,5 +1,6 @@
 // pages/create-team/create-team.js
 const apiConfig = require('../../config/api.js')
+const auth = require('../../utils/auth.js')
 
 Page({
   data: {
@@ -83,7 +84,7 @@ Page({
    * 加载用户发布的钓点列表
    */
   loadMySpots() {
-    const userId = wx.getStorageSync('userId')
+    const userId = auth.getUserId()
 
     if (!userId) {
       wx.showToast({
@@ -465,8 +466,8 @@ Page({
     }
 
     // 获取用户信息
-    const userId = wx.getStorageSync('userId')
-    const userInfo = wx.getStorageSync('userInfo') || {}
+    const userId = auth.getUserId()
+    const userInfo = auth.getUserInfo()
 
     // 构建请求数据
     const requestData = {

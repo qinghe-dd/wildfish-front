@@ -10,90 +10,105 @@ Page({
       mySpotsCount: 0,
       myPostsCount: 0,
       favoriteCount: 0
-    }
+    },
+    showProfileEditor: false,
+    editNickname: ''
   },
 
   onLoad(options) {
-    // 页面加载时检查登录状态
     this.checkAndLogin()
   },
 
   onShow() {
-    // 页面显示时刷新用户信息和统计数据
     this.refreshUserInfo()
     if (this.data.userId) {
       this.loadStats()
     }
   },
 
-  // 检查并登录
+  // 检查登录状态，未登录直接弹出资料编辑弹窗
   checkAndLogin() {
     const openid = auth.checkLogin()
 
     if (openid) {
-      // 已登录
-      console.log('✅ 用户已登录:', openid)
       this.setData({
         userId: openid,
         userInfo: auth.getUserInfo()
       })
       this.loadStats()
     } else {
-      // 未登录，执行登录
-      console.log('📝 用户未登录，开始登录流程')
-      this.performLogin()
+      // 未登录 → 直接弹出资料编辑弹窗
+      this.setData({
+        showProfileEditor: true,
+        editNickname: ''
+      })
     }
   },
 
-  // 执行登录
-  performLogin() {
-    // 先调用wx.login获取openid
-    auth.login().then((openid) => {
-      this.setData({ userId: openid })
-
-      // 提示用户授权获取昵称头像
-      wx.showModal({
-        title: '授权提示',
-        content: '为了更好的使用体验，请授权获取您的昵称和头像',
-        confirmText: '去授权',
-        success: (res) => {
-          if (res.confirm) {
-            // 用户点击"去授权"
-            this.getUserProfile()
-          } else {
-            // 用户拒绝授权，使用默认信息
-            console.log('用户拒绝授权，使用默认信息')
-            const defaultUserInfo = {
-              nickName: '钓鱼达人',
-              avatarUrl: ''
-            }
-            this.setData({ userInfo: defaultUserInfo })
-            this.loadStats()
-          }
-        }
-      })
-    }).catch((err) => {
-      console.error('❌ 登录失败:', err)
-      wx.showToast({
-        title: '登录失败，请重试',
-        icon: 'none'
-      })
+  // 显示资料编辑弹窗
+  showProfileEditor() {
+    this.setData({
+      showProfileEditor: true,
+      editNickname: this.data.userInfo.nickName || ''
     })
   },
 
-  // 获取用户信息（昵称头像）
-  getUserProfile() {
-    auth.getUserProfile().then((userInfo) => {
-      console.log('✅ 获取用户信息成功:', userInfo)
-      this.setData({ userInfo })
+  // 隐藏资料编辑弹窗
+  hideProfileEditor() {
+    this.setData({ showProfileEditor: false })
+  },
+
+  // 阻止事件冒泡（空操作）
+  preventBubble() {
+    // 空函数，仅用于 catchtap 阻止点击穿透到遮罩层
+  },
+
+  // 选择头像（通过 button open-type="chooseAvatar" 回调）
+  onChooseAvatar(e) {
+    const avatarUrl = e.detail.avatarUrl
+    const userInfo = this.data.userInfo
+    userInfo.avatarUrl = avatarUrl
+    this.setData({ userInfo })
+  },
+
+  // 输入昵称
+  onNicknameInput(e) {
+    this.setData({ editNickname: e.detail.value })
+  },
+
+  // 确认昵称（blur 时从 nickname input 组件获取微信昵称）
+  onNicknameConfirm(e) {
+    const nickName = e.detail.value
+    if (nickName) {
+      this.setData({ editNickname: nickName })
+    }
+  },
+
+  // 保存资料 — 调用 loginWithProfile 一次性完成登录+存库
+  saveProfile() {
+    const { editNickname, userInfo } = this.data
+    const nickName = editNickname || userInfo.nickName || '钓鱼达人'
+    const avatarUrl = userInfo.avatarUrl || ''
+
+    wx.showLoading({ title: '保存中...' })
+
+    auth.loginWithProfile(avatarUrl, nickName).then((updatedInfo) => {
+      wx.hideLoading()
+      this.setData({
+        userInfo: updatedInfo,
+        userId: auth.getUserId(),
+        showProfileEditor: false
+      })
       wx.showToast({
-        title: '授权成功',
+        title: '保存成功',
         icon: 'success'
       })
+      this.loadStats()
     }).catch((err) => {
-      console.error('❌ 获取用户信息失败:', err)
+      wx.hideLoading()
+      console.error('保存资料失败:', err)
       wx.showToast({
-        title: '授权失败',
+        title: err.message || '保存失败',
         icon: 'none'
       })
     })
@@ -115,18 +130,14 @@ Page({
     const { userId } = this.data
 
     if (!userId) {
-      console.log('未登录，无法加载统计数据')
       return
     }
 
-    // 加载我标记的钓点数量
     wx.request({
       url: `${apiConfig.BASE_URL}/fishing-spots/`,
       success: (res) => {
-        console.log('钓点列表:', res)
         if (res.statusCode === 200) {
           let spots = res.data || []
-          // 后端直接返回数组，前端按 owner_id 过滤
           const mySpots = spots.filter(spot => spot.owner_id === userId)
           this.setData({
             'stats.mySpotsCount': mySpots.length || 0
@@ -138,14 +149,10 @@ Page({
       }
     })
 
-    // TODO: 加载动态数量（需要后端API支持）
-    // 暂时设置为0
     this.setData({
       'stats.myPostsCount': 0
     })
 
-    // TODO: 加载收藏数量（需要后端API支持）
-    // 暂时设置为0
     this.setData({
       'stats.favoriteCount': 0
     })
