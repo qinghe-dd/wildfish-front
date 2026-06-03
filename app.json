@@ -10,8 +10,6 @@
     "pages/my-spots/my-spots",
     "pages/my-favorites/my-favorites",
     "pages/settings/settings",
-    "pages/teams-list/teams-list",
-    "pages/create-team/create-team",
     "pages/team-detail/team-detail"
   ],
   "tabBar": {

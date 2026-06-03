@@ -82,10 +82,10 @@
     </view>
   </view>
 
-  <!-- 浮动发布按钮 -->
-  <view class="floating-publish-btn" bindtap="goToPublish">
+  <!-- 浮动发布按钮（审核期间暂时关闭） -->
+  <!-- <view class="floating-publish-btn" bindtap="goToPublish">
     <text class="publish-icon">✏️</text>
-  </view>
+  </view> -->
 
   <!-- 评论弹窗 -->
   <view class="comment-modal" wx:if="{{showCommentModal}}" catchtouchmove="preventScroll">

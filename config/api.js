@@ -9,8 +9,8 @@ const config = {
   // 电脑开发者工具测试时，可以使用 'http://localhost:8000' 或 'http://127.0.0.1:8000'
 
   // ⬇️ 电脑开发时使用 localhost（需要开启域名校验关闭）
-  BASE_URL: 'http://localhost:8000',
-  //BASE_URL: 'http://wildfish.site:8000',
+  //BASE_URL: 'http://localhost:8000',
+  BASE_URL: 'http://wildfish.site:8000',
 
   // ⬇️ 手机预览时：使用WiFi局域网IP（请替换为你的实际IP）
   //BASE_URL: 'http://192.168.101.44:8000',
