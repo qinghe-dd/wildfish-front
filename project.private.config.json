@@ -1,8 +1,8 @@
 {
-  "libVersion": "3.9.0",
+  "libVersion": "3.14.3",
   "projectname": "miniprogram-3",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": false,
